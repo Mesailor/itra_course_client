@@ -1,19 +1,55 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userSlice";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import apiService from "../../services/APIService";
 
 export default function LoginPage() {
-  function authenticateUser() {
-    //send auth request to server
-    // server will check the given credentials and send response.
-    // if everything is okay, SET USER STATE and redirect to the main page
-    // if something is wrong show the message to user
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function updateName(e) {
+    setName(e.target.value);
+  }
+  function updatePassword(e) {
+    setPassword(e.target.value);
+  }
+
+  async function authenticateUser(e) {
+    e.preventDefault();
+    let userCredentials = {
+      name,
+      password,
+    };
+    let result = await apiService.sendAuthReq(userCredentials);
+
+    if (result.success) {
+      dispatch(setUser(result.user));
+      return navigate("/");
+    } else {
+      console.log(result.message);
+    }
   }
   return (
     <div className="login-page">
       <div className="login-form">
         <h2>Log in</h2>
         <form onSubmit={authenticateUser}>
-          <input className="username" type="text" />
-          <input className="password" type="password" />
+          <input
+            onChange={updateName}
+            className="name"
+            type="text"
+            value={name}
+          />
+          <input
+            onChange={updatePassword}
+            className="password"
+            type="password"
+            value={password}
+          />
           <input className="submit" type="submit" value={"Log in"} />
         </form>
         <span>Don't have an account yet? </span>
