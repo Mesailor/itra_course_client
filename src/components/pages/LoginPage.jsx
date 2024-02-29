@@ -12,7 +12,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   function updateName(e) {
-    setName(e.target.value);
+    setName(e.target.value.toLowerCase());
   }
   function updatePassword(e) {
     setPassword(e.target.value);
@@ -43,12 +43,20 @@ export default function LoginPage() {
             className="name"
             type="text"
             value={name}
+            minLength={1}
+            maxLength={64}
+            pattern="\w+"
+            required
           />
           <input
             onChange={updatePassword}
             className="password"
             type="password"
             value={password}
+            minLength={8}
+            maxLength={64}
+            pattern="^[!-z]{8,64}$"
+            required
           />
           <input className="submit" type="submit" value={"Log in"} />
         </form>
