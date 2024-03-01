@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import apiService from "../../services/APIService";
 import { setUser } from "../../store/userSlice";
+import { validateSignupForm } from "../../services/ValidationService";
 
 export default function RegPage() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -19,17 +21,30 @@ export default function RegPage() {
 
   async function signupUser(e) {
     e.preventDefault();
+
+    setErrorMessage("");
+    const errMessage = validateSignupForm(name, password);
+    if (errMessage) {
+      return setErrorMessage(errMessage);
+    }
+
     const newUser = {
       name,
       password,
     };
-    const result = await apiService.sendSignupReq(newUser);
+    try {
+      const result = await apiService.sendSignupReq(newUser);
 
-    if (result.success) {
-      dispatch(setUser(result.user));
-      return navigate("/");
-    } else {
-      console.log(result.message);
+      if (result.success) {
+        dispatch(setUser(result.user));
+        return navigate("/");
+      } else {
+        setErrorMessage(result.message);
+        console.log(result.message);
+      }
+    } catch (e) {
+      setErrorMessage("Sorry unable to connect to the server...");
+      console.log(e);
     }
   }
   return (
@@ -39,6 +54,11 @@ export default function RegPage() {
         className="signup-form  m-auto align-middle d-flex flex-column text-center"
       >
         <h2 className="m-3">Create an account</h2>
+        {errorMessage ? (
+          <div className="border border-danger text-danger p-2 my-3">
+            {errorMessage}
+          </div>
+        ) : null}
         <form className="d-flex flex-column text-start" onSubmit={signupUser}>
           <label className="form-label">Name</label>
           <input
@@ -46,10 +66,6 @@ export default function RegPage() {
             className="name form-control mb-3"
             type="text"
             value={name}
-            minLength={1}
-            maxLength={64}
-            pattern="\w+"
-            required
           />
           <label className="form-label">Password</label>
           <input
@@ -57,10 +73,6 @@ export default function RegPage() {
             className="password form-control mb-3"
             type="password"
             value={password}
-            minLength={8}
-            maxLength={64}
-            pattern="^[!-z]{8,64}$"
-            required
           />
           <input
             className="submit btn btn-primary my-3"

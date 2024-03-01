@@ -8,6 +8,7 @@ import apiService from "../../services/APIService";
 export default function LoginPage() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,17 +21,26 @@ export default function LoginPage() {
 
   async function authenticateUser(e) {
     e.preventDefault();
+
+    setErrorMessage("");
+
     let userCredentials = {
       name,
       password,
     };
-    let result = await apiService.sendAuthReq(userCredentials);
+    try {
+      const result = await apiService.sendAuthReq(userCredentials);
 
-    if (result.success) {
-      dispatch(setUser(result.user));
-      return navigate("/");
-    } else {
-      console.log(result.message);
+      if (result.success) {
+        dispatch(setUser(result.user));
+        return navigate("/");
+      } else {
+        setErrorMessage(result.message);
+        console.log(result.message);
+      }
+    } catch (e) {
+      setErrorMessage("Sorry unable to connect to the server...");
+      console.log(e);
     }
   }
   return (
@@ -40,6 +50,11 @@ export default function LoginPage() {
         className="login-form m-auto align-middle d-flex flex-column text-center"
       >
         <h2 className="m-3">Log in to your account</h2>
+        {errorMessage ? (
+          <div className="border border-danger text-danger p-2 my-3">
+            {errorMessage}
+          </div>
+        ) : null}
         <form
           className="d-flex flex-column text-start"
           onSubmit={authenticateUser}
@@ -50,9 +65,6 @@ export default function LoginPage() {
             className="name form-control mb-3"
             type="text"
             value={name}
-            minLength={1}
-            maxLength={64}
-            pattern="\w+"
             required
           />
 
@@ -62,9 +74,6 @@ export default function LoginPage() {
             className="password form-control mb-3"
             type="password"
             value={password}
-            minLength={8}
-            maxLength={64}
-            pattern="^[!-z]{8,64}$"
             required
           />
 
