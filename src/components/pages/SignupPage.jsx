@@ -33,13 +33,17 @@ export default function RegPage() {
     }
   }
   return (
-    <div className="signup-page">
-      <div className="signup-from">
-        <h2>Sign up</h2>
-        <form onSubmit={signupUser}>
+    <div className="signup-page container vh-100 d-flex align-items-center">
+      <div
+        style={{ width: "35%" }}
+        className="signup-form  m-auto align-middle d-flex flex-column text-center"
+      >
+        <h2 className="m-3">Create an account</h2>
+        <form className="d-flex flex-column text-start" onSubmit={signupUser}>
+          <label className="form-label">Name</label>
           <input
             onChange={updateName}
-            className="name"
+            className="name form-control mb-3"
             type="text"
             value={name}
             minLength={1}
@@ -47,9 +51,10 @@ export default function RegPage() {
             pattern="\w+"
             required
           />
+          <label className="form-label">Password</label>
           <input
             onChange={updatePassword}
-            className="password"
+            className="password form-control mb-3"
             type="password"
             value={password}
             minLength={8}
@@ -57,10 +62,15 @@ export default function RegPage() {
             pattern="^[!-z]{8,64}$"
             required
           />
-          <input className="submit" type="submit" value={"Sign up"} />
+          <input
+            className="submit btn btn-primary my-3"
+            type="submit"
+            value={"Sign up"}
+          />
         </form>
-        <span>Already have an account?</span>
-        <Link to="/log-in">Log In</Link>
+        <span className="my-3">
+          Already have an account? <Link to="/log-in">Log In</Link>
+        </span>
       </div>
     </div>
   );
