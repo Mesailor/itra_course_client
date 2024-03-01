@@ -1,5 +1,7 @@
+import { APIServiceConfig } from "../../config/config";
+
 class APIService {
-  host = "http://localhost:3004";
+  host = APIServiceConfig.host;
 
   async sendAuthReq(userCredentials) {
     return await fetch(`${this.host}/auth`, {
