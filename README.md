@@ -9,4 +9,4 @@ This application is using such technologies as:
 - Bootstrap 5
 
 You can see the result by visiting this url:
-(It hasn't deployed yet)
+http://collections.sailorme.ru
