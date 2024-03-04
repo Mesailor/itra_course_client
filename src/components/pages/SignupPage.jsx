@@ -37,7 +37,7 @@ export default function RegPage() {
 
       if (result.success) {
         dispatch(setUser(result.user));
-        return navigate("/");
+        return navigate("/main");
       } else {
         setErrorMessage(result.message);
         console.log(result.message);

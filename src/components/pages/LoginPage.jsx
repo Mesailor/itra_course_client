@@ -33,7 +33,7 @@ export default function LoginPage() {
 
       if (result.success) {
         dispatch(setUser(result.user));
-        return navigate("/");
+        return navigate("/main");
       } else {
         setErrorMessage(result.message);
         console.log(result.message);

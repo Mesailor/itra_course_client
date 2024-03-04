@@ -9,7 +9,7 @@ export default function ErrorPage() {
       <h2>Oops... It seems like something went wrong :(</h2>
       <p>Status: {error.status}</p>
       <p>{error.data}</p>
-      <Link to="/">Back to the main page</Link>
+      <Link to="/main">Back to the main page</Link>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function RootLayout() {
             <Link className="m-2" to={`user/${user.id}`}>
               Personal Collections
             </Link>
-            <Link className="m-2" onClick={logout} to="/log-in">
+            <Link className="m-2" onClick={logout} to="/main">
               Log out
             </Link>
           </div>
