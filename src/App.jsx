@@ -4,12 +4,24 @@ import MainPage from "./components/pages/MainPage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 import ErrorPage from "./components/pages/ErrorPage";
+import UserPage from "./components/pages/UserPage";
+import RootLayout from "./components/pages/RootLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage />,
+    element: <RootLayout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "main",
+        element: <MainPage />,
+      },
+      {
+        path: "user/:userId",
+        element: <UserPage />,
+      },
+    ],
   },
   {
     path: "/log-in",
