@@ -6,7 +6,6 @@ export default function CollectionsList({ collections }) {
       {collections.map((collection) => (
         <Collection key={collection.id} collection={collection} />
       ))}
-      <button className="add-new-collection">ADD NEW COLLECTION</button>
     </div>
   );
 }
