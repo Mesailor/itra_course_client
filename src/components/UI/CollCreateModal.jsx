@@ -7,9 +7,11 @@ export default function CollCreateModal() {
 
   const [image, setImage] = useState({});
   const [imageUrl, setImageUrl] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState("My collection");
   const [topic, setTopic] = useState("books");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [resultMessage, setResultMessage] = useState({});
 
   function updateImage(e) {
     // console.log(e.target.files[0]);
@@ -17,6 +19,7 @@ export default function CollCreateModal() {
   }
 
   async function createCollection() {
+    setIsLoading(true);
     const newCollection = {
       user_id: user.id,
       name,
@@ -27,12 +30,24 @@ export default function CollCreateModal() {
     try {
       const result = await apiService.reqCreateColl(newCollection);
       if (result.success) {
-        console.log(result.message);
+        setIsLoading(false);
+        setResultMessage({ color: "green", message: result.message });
+        setImage({});
+        setImageUrl();
+        setName("");
+        setTopic("books");
+        setDescription("");
       } else {
-        console.log(result.message);
+        setIsLoading(false);
+        setResultMessage({ color: "red", message: result.message });
       }
     } catch (e) {
       console.log(e);
+      setIsLoading(false);
+      setResultMessage({
+        color: "red",
+        message: "Sorry, unable to connect...",
+      });
     }
   }
 
@@ -70,6 +85,7 @@ export default function CollCreateModal() {
                 }}
                 className="form-control"
                 name="name"
+                value={name}
               />
               <label htmlFor="topic">Topic: </label>
               <select
@@ -90,12 +106,20 @@ export default function CollCreateModal() {
                 }}
                 className="form-control"
                 name="description"
+                value={description}
                 id="description"
                 rows="4"
               ></textarea>
             </form>
           </div>
           <div className="modal-footer">
+            {isLoading ? (
+              <div className="spinner-border m-auto" role="status"></div>
+            ) : (
+              <h5 className="m-auto" style={{ color: resultMessage.color }}>
+                {resultMessage.message}
+              </h5>
+            )}
             <button
               type="button"
               className="btn btn-secondary"
