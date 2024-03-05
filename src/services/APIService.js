@@ -30,6 +30,17 @@ class APIService {
       response.json()
     );
   }
+
+  async reqCreateColl(newCollection) {
+    return await fetch(`${this.host}/collections/create`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: newCollection }),
+    }).then((response) => response.json());
+  }
 }
 
 export default new APIService();
