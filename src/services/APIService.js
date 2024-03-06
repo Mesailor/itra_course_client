@@ -41,6 +41,17 @@ class APIService {
       body: JSON.stringify({ payload: newCollection }),
     }).then((response) => response.json());
   }
+
+  async reqDeleteColl(collectionId) {
+    return await fetch(`${this.host}/collections/delete`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: collectionId }),
+    });
+  }
 }
 
 export default new APIService();
