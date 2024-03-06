@@ -1,31 +1,42 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import apiService from "../../services/APIService";
+import { storage } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
 
 export default function CollCreateModal() {
   const user = useSelector((store) => store.user);
 
-  const [image, setImage] = useState({});
-  const [imageUrl, setImageUrl] = useState("");
-  const [name, setName] = useState("My collection");
+  const [image, setImage] = useState(null);
+  const [imagePath, setImagePath] = useState("");
+  const [name, setName] = useState("");
   const [topic, setTopic] = useState("books");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState({});
 
-  function updateImage(e) {
-    // console.log(e.target.files[0]);
-    // upload file and set image url
+  async function updateImage(e) {
+    setImagePath(e.target.value);
+    setImage(e.target.files[0]);
   }
 
   async function createCollection() {
     setIsLoading(true);
+
+    let imageUrl;
+    if (image) {
+      const imageRef = ref(storage, `coll_images/${image.name + v4()}`);
+      await uploadBytes(imageRef, image);
+      imageUrl = await getDownloadURL(imageRef);
+    }
+
     const newCollection = {
       user_id: user.id,
       name,
       topic,
       description,
-      // imageUrl,
+      imageUrl,
     };
     try {
       const result = await apiService.reqCreateColl(newCollection);
@@ -33,7 +44,7 @@ export default function CollCreateModal() {
         setIsLoading(false);
         setResultMessage({ color: "green", message: result.message });
         setImage({});
-        setImageUrl();
+        setImagePath("");
         setName("");
         setTopic("books");
         setDescription("");
@@ -75,7 +86,13 @@ export default function CollCreateModal() {
           <div className="modal-body">
             <form className="d-flex flex-column">
               <label htmlFor="image">Image: </label>
-              <input onChange={updateImage} name="image" type="file" />
+              <input
+                onChange={updateImage}
+                name="image"
+                type="file"
+                accept="image/png, image/jpeg"
+                value={imagePath}
+              />
               <label className="form-label" htmlFor="name">
                 Name:
               </label>
@@ -124,6 +141,9 @@ export default function CollCreateModal() {
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
+              onClick={() => {
+                setResultMessage({});
+              }}
             >
               Close
             </button>

@@ -2,9 +2,9 @@ export default function Collection({ collection }) {
   return (
     <div className="collection">
       <img
-        className="thumbnail"
+        className="collection-image"
         src={collection.imageUrl}
-        alt="image-thumbnail"
+        alt="collection-image"
       />
       <h3 className="name">Name: {collection.name}</h3>
       <i className="topic">Topic: {collection.topic}</i>
