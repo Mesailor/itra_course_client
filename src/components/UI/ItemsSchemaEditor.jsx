@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setField } from "../../store/itemsSchemaSlice";
 
 export default function ItemsSchemaEditor() {
   const dispatch = useDispatch();
+  const itemsSchema = useSelector((store) => store.itemsSchema);
 
   function updateField(field, name) {
     let state = true;
@@ -26,6 +27,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom integer field"
+                value={itemsSchema.custom_int1_name}
               />
             </span>
           </li>
@@ -37,6 +39,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom integer field"
+                value={itemsSchema.custom_int2_name}
               />
             </span>
           </li>
@@ -48,6 +51,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom integer field"
+                value={itemsSchema.custom_int3_name}
               />
             </span>
           </li>
@@ -59,6 +63,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom string field"
+                value={itemsSchema.custom_str1_name}
               />
             </span>
           </li>
@@ -70,6 +75,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom string field"
+                value={itemsSchema.custom_str2_name}
               />
             </span>
           </li>
@@ -81,6 +87,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom string field"
+                value={itemsSchema.custom_str3_name}
               />
             </span>
           </li>
@@ -92,6 +99,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom date field"
+                value={itemsSchema.custom_date1_name}
               />
             </span>
           </li>
@@ -103,6 +111,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom date field"
+                value={itemsSchema.custom_date2_name}
               />
             </span>
           </li>
@@ -114,6 +123,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom date field"
+                value={itemsSchema.custom_date3_name}
               />
             </span>
           </li>
@@ -125,6 +135,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom boolean field"
+                value={itemsSchema.custom_bool1_name}
               />
             </span>
           </li>
@@ -136,6 +147,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom boolean field"
+                value={itemsSchema.custom_bool2_name}
               />
             </span>
           </li>
@@ -147,6 +159,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom boolean field"
+                value={itemsSchema.custom_bool3_name}
               />
             </span>
           </li>
@@ -158,6 +171,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom multiline text field"
+                value={itemsSchema.custom_multext1_name}
               />
             </span>
           </li>
@@ -169,6 +183,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom multiline text field"
+                value={itemsSchema.custom_multext2_name}
               />
             </span>
           </li>
@@ -180,6 +195,7 @@ export default function ItemsSchemaEditor() {
                 }}
                 type="text"
                 placeholder="custom multiline text field"
+                value={itemsSchema.custom_multext3_name}
               />
             </span>
           </li>

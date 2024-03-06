@@ -39,9 +39,41 @@ const itemsSchemaSlice = createSlice({
       state[`custom_${action.payload.field}_state`] = action.payload.state;
       state[`custom_${action.payload.field}_name`] = action.payload.name;
     },
+    resetFields: (state, action) => {
+      state.custom_str1_name = "";
+      state.custom_str1_state = false;
+      state.custom_str2_name = "";
+      state.custom_str2_state = false;
+      state.custom_str3_name = "";
+      state.custom_str3_state = false;
+      state.custom_int1_name = "";
+      state.custom_int1_state = false;
+      state.custom_int2_name = "";
+      state.custom_int2_state = false;
+      state.custom_int3_name = "";
+      state.custom_int3_state = false;
+      state.custom_bool1_name = "";
+      state.custom_bool1_state = false;
+      state.custom_bool2_name = "";
+      state.custom_bool2_state = false;
+      state.custom_bool3_name = "";
+      state.custom_bool3_state = false;
+      state.custom_date1_name = "";
+      state.custom_date1_state = false;
+      state.custom_date2_name = "";
+      state.custom_date2_state = false;
+      state.custom_date3_name = "";
+      state.custom_date3_state = false;
+      state.custom_multext1_name = "";
+      state.custom_multext1_state = false;
+      state.custom_multext2_name = "";
+      state.custom_multext2_state = false;
+      state.custom_multext3_name = "";
+      state.custom_multext3_state = false;
+    },
   },
 });
 
-export const { setField } = itemsSchemaSlice.actions;
+export const { setField, resetFields } = itemsSchemaSlice.actions;
 
 export default itemsSchemaSlice.reducer;

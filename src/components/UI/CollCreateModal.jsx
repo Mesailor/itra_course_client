@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiService from "../../services/APIService";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
+import { resetFields } from "../../store/itemsSchemaSlice";
 
 export default function CollCreateModal() {
   const user = useSelector((store) => store.user);
   const itemsSchema = useSelector((store) => store.itemsSchema);
+  const dispatch = useDispatch();
 
   const [image, setImage] = useState(null);
   const [imagePath, setImagePath] = useState("");
@@ -51,6 +53,7 @@ export default function CollCreateModal() {
         setName("");
         setTopic("books");
         setDescription("");
+        dispatch(resetFields());
       } else {
         setIsLoading(false);
         setResultMessage({ color: "red", message: result.message });
@@ -114,6 +117,7 @@ export default function CollCreateModal() {
                 }}
                 name="topic"
                 id="topic"
+                value={topic}
               >
                 <option value="books">Books</option>
                 <option value="signs">Signs</option>
