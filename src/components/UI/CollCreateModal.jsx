@@ -4,9 +4,11 @@ import apiService from "../../services/APIService";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import ItemsSchemaEditor from "./ItemsSchemaEditor";
 
 export default function CollCreateModal() {
   const user = useSelector((store) => store.user);
+  const itemsSchema = useSelector((store) => store.itemsSchema);
 
   const [image, setImage] = useState(null);
   const [imagePath, setImagePath] = useState("");
@@ -37,6 +39,7 @@ export default function CollCreateModal() {
       topic,
       description,
       imageUrl,
+      ...itemsSchema,
     };
     try {
       const result = await apiService.reqCreateColl(newCollection);
@@ -128,7 +131,10 @@ export default function CollCreateModal() {
                 rows="4"
               ></textarea>
             </form>
+            <h5>Items in my collection will have fields:</h5>
+            <ItemsSchemaEditor />
           </div>
+
           <div className="modal-footer">
             {isLoading ? (
               <div className="spinner-border m-auto" role="status"></div>
