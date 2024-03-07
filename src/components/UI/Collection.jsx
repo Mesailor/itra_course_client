@@ -1,4 +1,5 @@
 import CollDeleteModal from "./CollDeleteModal";
+import CollEditModal from "./CollEditModal";
 
 export default function Collection({ collection }) {
   return (
@@ -16,11 +17,20 @@ export default function Collection({ collection }) {
         type="button"
         className="btn btn-danger"
         data-bs-toggle="modal"
-        data-bs-target="#CollDeleteModal"
+        data-bs-target={`#CollDeleteModal${collection.id}`}
       >
         Delete
       </button>
+      <button
+        type="button"
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target={`#CollEditModal${collection.id}`}
+      >
+        Edit
+      </button>
       <CollDeleteModal collectionId={collection.id} />
+      <CollEditModal collection={collection} />
     </div>
   );
 }

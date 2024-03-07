@@ -63,6 +63,17 @@ class APIService {
       body: JSON.stringify({ payload: collectionId }),
     });
   }
+
+  async reqUpdateColl(newCollection, collectionId) {
+    return await fetch(`${this.host}/collections/update`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: { newCollection, collectionId } }),
+    }).then((response) => response.json());
+  }
 }
 
 export default new APIService();
