@@ -1,6 +1,7 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function RootLayout() {
   const dispatch = useDispatch();
@@ -9,6 +10,14 @@ export default function RootLayout() {
   function logout() {
     dispatch(setUser({ name: "", isAdmin: false }));
   }
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/main");
+    }
+  });
   return (
     <div className="root-layout">
       <header
