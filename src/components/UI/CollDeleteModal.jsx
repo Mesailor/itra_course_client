@@ -1,8 +1,13 @@
+import { useDispatch } from "react-redux";
 import apiService from "../../services/APIService";
+import { triggerRefetch } from "../../store/refetchSlice";
 
 export default function CollDeleteModal({ collectionId }) {
+  const dispatch = useDispatch();
+
   async function deleteCollection() {
     await apiService.reqDeleteColl(collectionId);
+    dispatch(triggerRefetch());
   }
   return (
     <div

@@ -7,12 +7,13 @@ import { useSelector } from "react-redux";
 export default function UserPage() {
   const [collections, setCollections] = useState([]);
   const user = useSelector((store) => store.user);
+  const trigger = useSelector((store) => store.refetch.trigger);
 
   useEffect(() => {
     apiService.getOwnCollections(user.id).then((collections) => {
       setCollections(collections);
     });
-  }, []);
+  }, [trigger]);
 
   return (
     <div className="user-page">

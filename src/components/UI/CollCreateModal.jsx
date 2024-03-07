@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiService from "../../services/APIService";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
+import { triggerRefetch } from "../../store/refetchSlice";
 
 export default function CollCreateModal() {
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const initialItemsSchema = {
     custom_str1_name: "",
@@ -99,6 +101,7 @@ export default function CollCreateModal() {
         message: "Sorry, unable to connect...",
       });
     }
+    dispatch(triggerRefetch());
   }
 
   function resetItemsShema() {

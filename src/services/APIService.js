@@ -55,7 +55,7 @@ class APIService {
 
   async reqDeleteColl(collectionId) {
     return await fetch(`${this.host}/collections/delete`, {
-      method: "POST",
+      method: "DELETE",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
