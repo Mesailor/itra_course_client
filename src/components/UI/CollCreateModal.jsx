@@ -1,15 +1,45 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import apiService from "../../services/APIService";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
-import { resetFields } from "../../store/itemsSchemaSlice";
 
 export default function CollCreateModal() {
   const user = useSelector((store) => store.user);
-  const itemsSchema = useSelector((store) => store.itemsSchema);
-  const dispatch = useDispatch();
+  const initialItemsSchema = {
+    custom_str1_name: "",
+    custom_str1_state: false,
+    custom_str2_name: "",
+    custom_str2_state: false,
+    custom_str3_name: "",
+    custom_str3_state: false,
+    custom_int1_name: "",
+    custom_int1_state: false,
+    custom_int2_name: "",
+    custom_int2_state: false,
+    custom_int3_name: "",
+    custom_int3_state: false,
+    custom_bool1_name: "",
+    custom_bool1_state: false,
+    custom_bool2_name: "",
+    custom_bool2_state: false,
+    custom_bool3_name: "",
+    custom_bool3_state: false,
+    custom_date1_name: "",
+    custom_date1_state: false,
+    custom_date2_name: "",
+    custom_date2_state: false,
+    custom_date3_name: "",
+    custom_date3_state: false,
+    custom_multext1_name: "",
+    custom_multext1_state: false,
+    custom_multext2_name: "",
+    custom_multext2_state: false,
+    custom_multext3_name: "",
+    custom_multext3_state: false,
+  };
+  const [itemsSchema, setItemsSchema] = useState(initialItemsSchema);
 
   const [image, setImage] = useState(null);
   const [imagePath, setImagePath] = useState("");
@@ -54,7 +84,7 @@ export default function CollCreateModal() {
         setName("");
         setTopic("books");
         setDescription("");
-        dispatch(resetFields());
+        resetItemsShema();
         setIsLoading(false);
         setResultMessage({ color: "green", message: result.message });
       } else {
@@ -69,6 +99,10 @@ export default function CollCreateModal() {
         message: "Sorry, unable to connect...",
       });
     }
+  }
+
+  function resetItemsShema() {
+    setItemsSchema(initialItemsSchema);
   }
 
   return (
@@ -139,7 +173,10 @@ export default function CollCreateModal() {
               ></textarea>
             </form>
             <h5>Items in my collection will have fields:</h5>
-            <ItemsSchemaEditor />
+            <ItemsSchemaEditor
+              itemsSchema={itemsSchema}
+              setItemsSchema={setItemsSchema}
+            />
           </div>
 
           <div className="modal-footer">

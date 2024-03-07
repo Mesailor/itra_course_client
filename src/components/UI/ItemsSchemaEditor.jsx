@@ -1,16 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { setField } from "../../store/itemsSchemaSlice";
-
-export default function ItemsSchemaEditor() {
-  const dispatch = useDispatch();
-  const itemsSchema = useSelector((store) => store.itemsSchema);
-
+export default function ItemsSchemaEditor({ itemsSchema, setItemsSchema }) {
   function updateField(field, name) {
     let state = true;
     if (!name) {
       state = false;
     }
-    dispatch(setField({ field, name, state }));
+    const newItemsSchema = { ...itemsSchema };
+    newItemsSchema[`custom_${field}_name`] = name;
+    newItemsSchema[`custom_${field}_state`] = state;
+    setItemsSchema(newItemsSchema);
   }
 
   return (
