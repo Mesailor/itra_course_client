@@ -29,32 +29,35 @@ export default function CollCreateModal() {
     if (isLoading) return;
     setIsLoading(true);
 
-    let imageUrl;
-    if (image) {
-      const imageRef = ref(storage, `coll_images/${image.name + v4()}`);
-      await uploadBytes(imageRef, image);
-      imageUrl = await getDownloadURL(imageRef);
-    }
-
     const newCollection = {
       user_id: user.id,
       name,
       topic,
       description,
-      imageUrl,
       ...itemsSchema,
     };
     try {
       const result = await apiService.reqCreateColl(newCollection);
       if (result.success) {
-        setIsLoading(false);
-        setResultMessage({ color: "green", message: result.message });
+        let imageUrl;
+        if (image) {
+          const imageRef = ref(
+            storage,
+            `coll_images/${user.id + result.newCollection.id}`
+          );
+          await uploadBytes(imageRef, image);
+          imageUrl = await getDownloadURL(imageRef);
+          await apiService.updateImageUrl(imageUrl, result.newCollection.id);
+        }
+
         setImage({});
         setImagePath("");
         setName("");
         setTopic("books");
         setDescription("");
         dispatch(resetFields());
+        setIsLoading(false);
+        setResultMessage({ color: "green", message: result.message });
       } else {
         setIsLoading(false);
         setResultMessage({ color: "red", message: result.message });

@@ -42,6 +42,17 @@ class APIService {
     }).then((response) => response.json());
   }
 
+  async updateImageUrl(imageUrl, collectionId) {
+    return await fetch(`${this.host}/collections/updateImageUrl`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: { imageUrl, collectionId } }),
+    }).then((response) => response.json());
+  }
+
   async reqDeleteColl(collectionId) {
     return await fetch(`${this.host}/collections/delete`, {
       method: "POST",
