@@ -7,7 +7,7 @@ export default function CollDeleteModal({ collectionId }) {
   return (
     <div
       className="modal fade"
-      id="staticBackdrop"
+      id="CollDeleteModal"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
       tabIndex="-1"

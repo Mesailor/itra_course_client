@@ -20,7 +20,7 @@ export default function UserPage() {
       <button
         className="add-new-collection"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
+        data-bs-target="#CollCreateModal"
       >
         ADD NEW COLLECTION
       </button>

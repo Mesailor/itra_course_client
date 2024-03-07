@@ -26,6 +26,7 @@ export default function CollCreateModal() {
   }
 
   async function createCollection() {
+    if (isLoading) return;
     setIsLoading(true);
 
     let imageUrl;
@@ -71,7 +72,7 @@ export default function CollCreateModal() {
   return (
     <div
       className="modal fade"
-      id="exampleModal"
+      id="CollCreateModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
