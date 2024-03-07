@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import apiService from "../../services/APIService";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
 import { resetFields } from "../../store/itemsSchemaSlice";
 
@@ -34,7 +33,7 @@ export default function CollCreateModal() {
       name,
       topic,
       description,
-      ...itemsSchema,
+      itemsSchema: JSON.stringify(itemsSchema),
     };
     try {
       const result = await apiService.reqCreateColl(newCollection);
