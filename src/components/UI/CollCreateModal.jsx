@@ -48,7 +48,7 @@ export default function CollCreateModal() {
   const [imagePath, setImagePath] = useState("");
   const [name, setName] = useState("");
   const [topic, setTopic] = useState("books");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(" ");
   const [isLoading, setIsLoading] = useState(false);
   const [resultMessage, setResultMessage] = useState({});
 
@@ -86,7 +86,7 @@ export default function CollCreateModal() {
         setImagePath("");
         setName("");
         setTopic("books");
-        setDescription("");
+        setDescription(" ");
         resetItemsShema();
         setIsLoading(false);
         setResultMessage({ color: "green", message: result.message });
@@ -116,6 +116,9 @@ export default function CollCreateModal() {
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      onClick={() => {
+        setResultMessage({});
+      }}
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
@@ -128,6 +131,9 @@ export default function CollCreateModal() {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={() => {
+                setResultMessage({});
+              }}
             ></button>
           </div>
           <div className="modal-body">
@@ -150,6 +156,7 @@ export default function CollCreateModal() {
                 className="form-control"
                 name="name"
                 value={name}
+                required
               />
               <label htmlFor="topic">Topic: </label>
               <select
@@ -163,6 +170,7 @@ export default function CollCreateModal() {
                 <option value="books">Books</option>
                 <option value="signs">Signs</option>
                 <option value="silverware">Silverware</option>
+                <option value="other">Other</option>
               </select>
               <div className="markdown-description">
                 <label htmlFor="description">Description: </label>

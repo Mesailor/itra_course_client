@@ -75,6 +75,9 @@ export default function CollEditModal({ collection }) {
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      onClick={() => {
+        setResultMessage({});
+      }}
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
@@ -87,6 +90,9 @@ export default function CollEditModal({ collection }) {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={() => {
+                setResultMessage({});
+              }}
             ></button>
           </div>
           <div className="modal-body">
@@ -109,6 +115,7 @@ export default function CollEditModal({ collection }) {
                 className="form-control"
                 name="name"
                 value={name}
+                required
               />
               <label htmlFor="topic">Topic: </label>
               <select
@@ -122,6 +129,7 @@ export default function CollEditModal({ collection }) {
                 <option value="books">Books</option>
                 <option value="signs">Signs</option>
                 <option value="silverware">Silverware</option>
+                <option value="other">Other</option>
               </select>
               <div className="markdown-description">
                 <label htmlFor="description">Description: </label>
