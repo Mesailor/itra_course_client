@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import CollDeleteModal from "./CollDeleteModal";
 import CollEditModal from "./CollEditModal";
 
@@ -11,7 +12,10 @@ export default function Collection({ collection }) {
       />
       <h3 className="name">Name: {collection.name}</h3>
       <i className="topic">Topic: {collection.topic}</i>
-      <p className="description">Description: {collection.description}</p>
+      <div className="description" data-color-mode="light">
+        <h6>Description: </h6>
+        <MDEditor.Markdown source={collection.description} />
+      </div>
 
       <button
         type="button"

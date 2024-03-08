@@ -5,6 +5,7 @@ import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
 import { triggerRefetch } from "../../store/refetchSlice";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function CollCreateModal() {
   const dispatch = useDispatch();
@@ -163,17 +164,12 @@ export default function CollCreateModal() {
                 <option value="signs">Signs</option>
                 <option value="silverware">Silverware</option>
               </select>
-              <label htmlFor="description">Description: </label>
-              <textarea
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                className="form-control"
-                name="description"
-                value={description}
-                id="description"
-                rows="4"
-              ></textarea>
+              <div className="markdown-description">
+                <label htmlFor="description">Description: </label>
+                <div className="markdown" data-color-mode="light">
+                  <MDEditor value={description} onChange={setDescription} />
+                </div>
+              </div>
             </form>
             <h5>Items in my collection will have fields:</h5>
             <ItemsSchemaEditor
