@@ -4,8 +4,11 @@ import MainPage from "./components/pages/MainPage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 import ErrorPage from "./components/pages/ErrorPage";
-import UserPage from "./components/pages/UserPage";
+import UserPage, {
+  loader as userPageLoader,
+} from "./components/pages/UserPage";
 import RootLayout from "./components/pages/RootLayout";
+import { UserPageProvider } from "./context/UserPageContext";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +22,12 @@ const router = createBrowserRouter([
       },
       {
         path: "user/:userId",
-        element: <UserPage />,
+        loader: userPageLoader,
+        element: (
+          <UserPageProvider>
+            <UserPage />
+          </UserPageProvider>
+        ),
       },
     ],
   },

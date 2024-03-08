@@ -25,7 +25,7 @@ class APIService {
     }).then((response) => response.json());
   }
 
-  async getOwnCollections(user_id) {
+  async getCollections(user_id) {
     return await fetch(`${this.host}/collections/${user_id}`).then((response) =>
       response.json()
     );

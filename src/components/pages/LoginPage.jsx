@@ -87,6 +87,9 @@ export default function LoginPage() {
           Don't have an account yet?{" "}
           <Link to="/sign-up">Create an account</Link>
         </span>
+        <Link className="text-decoration-none" to="/main">
+          <h5>Main page</h5>
+        </Link>
       </div>
     </div>
   );

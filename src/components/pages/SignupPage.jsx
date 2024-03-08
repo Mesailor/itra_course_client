@@ -83,6 +83,9 @@ export default function RegPage() {
         <span className="my-3">
           Already have an account? <Link to="/log-in">Log In</Link>
         </span>
+        <Link className="text-decoration-none" to="/main">
+          <h5>Main page</h5>
+        </Link>
       </div>
     </div>
   );
