@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const sessionUser = JSON.parse(window.sessionStorage.getItem("user"));
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    id: "",
-    name: "",
-    isAdmin: false,
+    id: sessionUser?.id || "",
+    name: sessionUser?.name || "",
+    isAdmin: sessionUser?.isAdmin || false,
   },
   reducers: {
     setUser: (state, action) => {

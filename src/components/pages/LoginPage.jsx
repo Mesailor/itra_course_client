@@ -33,6 +33,7 @@ export default function LoginPage() {
 
       if (result.success) {
         dispatch(setUser(result.user));
+        window.sessionStorage.setItem("user", JSON.stringify(result.user));
         return navigate("/main");
       } else {
         setErrorMessage(result.message);
