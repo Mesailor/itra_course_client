@@ -68,6 +68,10 @@ export default function CollEditModal({ collection }) {
     dispatch(triggerRefetch());
   }
 
+  function resetResultMessage() {
+    setResultMessage({});
+  }
+
   return (
     <div
       className="modal fade"
@@ -75,9 +79,7 @@ export default function CollEditModal({ collection }) {
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-      onClick={() => {
-        setResultMessage({});
-      }}
+      onClick={resetResultMessage}
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
@@ -90,9 +92,7 @@ export default function CollEditModal({ collection }) {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => {
-                setResultMessage({});
-              }}
+              onClick={resetResultMessage}
             ></button>
           </div>
           <div className="modal-body">
@@ -157,9 +157,7 @@ export default function CollEditModal({ collection }) {
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
-              onClick={() => {
-                setResultMessage({});
-              }}
+              onClick={resetResultMessage}
             >
               Close
             </button>

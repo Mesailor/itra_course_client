@@ -87,7 +87,7 @@ export default function CollCreateModal() {
         setName("");
         setTopic("books");
         setDescription(" ");
-        resetItemsShema();
+        setItemsSchema(initialItemsSchema);
         setIsLoading(false);
         setResultMessage({ color: "green", message: result.message });
       } else {
@@ -105,8 +105,8 @@ export default function CollCreateModal() {
     dispatch(triggerRefetch());
   }
 
-  function resetItemsShema() {
-    setItemsSchema(initialItemsSchema);
+  function resetResultMessage() {
+    setResultMessage({});
   }
 
   return (
@@ -116,9 +116,7 @@ export default function CollCreateModal() {
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-      onClick={() => {
-        setResultMessage({});
-      }}
+      onClick={resetResultMessage}
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
@@ -131,9 +129,7 @@ export default function CollCreateModal() {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => {
-                setResultMessage({});
-              }}
+              onClick={resetResultMessage}
             ></button>
           </div>
           <div className="modal-body">
@@ -198,9 +194,7 @@ export default function CollCreateModal() {
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
-              onClick={() => {
-                setResultMessage({});
-              }}
+              onClick={resetResultMessage}
             >
               Close
             </button>
