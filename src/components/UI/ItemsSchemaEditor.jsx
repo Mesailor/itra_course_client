@@ -1,12 +1,7 @@
 export default function ItemsSchemaEditor({ itemsSchema, setItemsSchema }) {
   function updateField(field, name) {
-    let state = true;
-    if (!name) {
-      state = false;
-    }
     const newItemsSchema = { ...itemsSchema };
     newItemsSchema[`custom_${field}_name`] = name;
-    newItemsSchema[`custom_${field}_state`] = state;
     setItemsSchema(newItemsSchema);
   }
 
