@@ -74,6 +74,18 @@ class APIService {
       body: JSON.stringify({ payload: { newCollection, collectionId } }),
     }).then((response) => response.json());
   }
+
+  async getCollection(collectionId) {
+    return await fetch(`${this.host}/collection/${collectionId}`).then(
+      (response) => response.json()
+    );
+  }
+
+  async getItems(collectionId) {
+    return await fetch(`${this.host}/items/${collectionId}`).then((response) =>
+      response.json()
+    );
+  }
 }
 
 export default new APIService();

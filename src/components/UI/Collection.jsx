@@ -4,6 +4,7 @@ import CollEditModal from "./CollEditModal";
 import { useContext } from "react";
 import { UserPageContext } from "../../context/UserPageContext";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function Collection({ collection }) {
   const { usersPageId } = useContext(UserPageContext);
@@ -21,6 +22,7 @@ export default function Collection({ collection }) {
         <h6>Description: </h6>
         <MDEditor.Markdown source={collection.description} />
       </div>
+      <Link to={`collection/${collection.id}`}>View collection</Link>
 
       {usersPageId === user.id ? (
         <>

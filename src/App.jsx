@@ -9,6 +9,9 @@ import UserPage, {
 } from "./components/pages/UserPage";
 import RootLayout from "./components/pages/RootLayout";
 import { UserPageProvider } from "./context/UserPageContext";
+import CollectionPage, {
+  loader as collectionPageLoader,
+} from "./components/pages/CollectionPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +31,11 @@ const router = createBrowserRouter([
             <UserPage />
           </UserPageProvider>
         ),
+      },
+      {
+        path: "user/:userId/collection/:collectionId",
+        loader: collectionPageLoader,
+        element: <CollectionPage />,
       },
     ],
   },
