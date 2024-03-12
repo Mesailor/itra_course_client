@@ -46,6 +46,10 @@ export default function CollCreateModal() {
     if (isLoading) return;
     setIsLoading(true);
 
+    for (let name in itemsSchema) {
+      itemsSchema[name] = itemsSchema[name].trim();
+    }
+
     const newCollection = {
       user_id: user.id,
       name,

@@ -38,6 +38,10 @@ export default function CollEditModal({ collection }) {
       imageUrl = await getDownloadURL(imageRef);
     }
 
+    for (let name in itemsSchema) {
+      itemsSchema[name] = itemsSchema[name].trim();
+    }
+
     const newCollection = {
       name,
       topic,
