@@ -100,7 +100,7 @@ export default function CollEditModal({ collection }) {
             ></button>
           </div>
           <div className="modal-body">
-            <form className="d-flex flex-column">
+            <div className="d-flex flex-column">
               <label htmlFor="image">Image: </label>
               <input
                 onChange={updateImage}
@@ -141,7 +141,7 @@ export default function CollEditModal({ collection }) {
                   <MDEditor value={description} onChange={setDescription} />
                 </div>
               </div>
-            </form>
+            </div>
             <h5>Items in my collection will have fields:</h5>
             <ItemsSchemaEditor
               itemsSchema={itemsSchema}
