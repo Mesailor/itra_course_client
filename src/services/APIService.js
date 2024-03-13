@@ -97,6 +97,17 @@ class APIService {
       body: JSON.stringify({ payload: newItem }),
     }).then((response) => response.json());
   }
+
+  async reqDeleteItem(itemId) {
+    return await fetch(`${this.host}/items/delete`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: itemId }),
+    });
+  }
 }
 
 export default new APIService();
