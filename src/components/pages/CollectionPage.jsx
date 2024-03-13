@@ -5,6 +5,8 @@ import MDEditor from "@uiw/react-md-editor";
 import { useLoaderData } from "react-router-dom";
 import ItemCreateModal from "../UI/ItemCreateModal";
 import { useSelector } from "react-redux";
+import ItemDeleteModal from "../UI/ItemDeleteModal";
+import ItemEditModal from "../UI/ItemEditModal";
 
 export function loader({ params }) {
   const collectionPageId = params.collectionId;
@@ -91,6 +93,18 @@ export default function CollectionPage() {
         </table>
       </div>
       <ItemCreateModal collectionId={collection.id} itemsSchema={itemsSchema} />
+      {items.length
+        ? items.map((item) => (
+            <div key={item.id}>
+              <ItemDeleteModal itemId={item.id} />
+              <ItemEditModal
+                collectionId={collection.id}
+                itemsSchema={itemsSchema}
+                item={item}
+              />
+            </div>
+          ))
+        : null}
     </div>
   );
 }

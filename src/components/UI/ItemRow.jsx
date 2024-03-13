@@ -1,5 +1,3 @@
-import ItemDeleteModal from "./ItemDeleteModal";
-
 export default function ItemRow({ item, itemsSchema }) {
   return (
     <>
@@ -113,7 +111,14 @@ export default function ItemRow({ item, itemsSchema }) {
           {item.custom_multext3_value}
         </td>
         <td>
-          <button>EDIT</button>{" "}
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target={`#ItemEditModal${item.id}`}
+          >
+            EDIT
+          </button>
           <button
             type="button"
             className="btn btn-danger"
@@ -124,7 +129,6 @@ export default function ItemRow({ item, itemsSchema }) {
           </button>
         </td>
       </tr>
-      <ItemDeleteModal itemId={item.id} />
     </>
   );
 }

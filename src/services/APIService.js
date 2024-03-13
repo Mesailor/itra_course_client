@@ -108,6 +108,17 @@ class APIService {
       body: JSON.stringify({ payload: itemId }),
     });
   }
+
+  async reqEditItem(newItem, itemId) {
+    return await fetch(`${this.host}/items/update`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: { newItem, itemId } }),
+    }).then((response) => response.json());
+  }
 }
 
 export default new APIService();

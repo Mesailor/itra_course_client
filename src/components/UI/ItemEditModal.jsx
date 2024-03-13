@@ -4,32 +4,32 @@ import { useDispatch } from "react-redux";
 import { triggerRefetch } from "../../store/refetchSlice";
 import ItemValuesEditor from "./ItemValuesEditor";
 
-export default function ItemCreateModal({ collectionId, itemsSchema }) {
-  const [name, setName] = useState("");
-  const [tags, setTags] = useState("");
+export default function ItemEditModal({ collectionId, itemsSchema, item }) {
+  const [name, setName] = useState(item.name);
+  const [tags, setTags] = useState(JSON.parse(item.tags).join(" "));
   const initialFildsValues = {
-    custom_str1_value: "",
-    custom_str2_value: "",
-    custom_str3_value: "",
-    custom_int1_value: 0,
-    custom_int2_value: 0,
-    custom_int3_value: 0,
-    custom_date1_value: "1970-01-01",
-    custom_date2_value: "1970-01-01",
-    custom_date3_value: "1970-01-01",
-    custom_bool1_value: false,
-    custom_bool2_value: false,
-    custom_bool3_value: false,
-    custom_multext1_value: "",
-    custom_multext2_value: "",
-    custom_multext3_value: "",
+    custom_str1_value: item.custom_str1_value,
+    custom_str2_value: item.custom_str2_value,
+    custom_str3_value: item.custom_str3_value,
+    custom_int1_value: item.custom_int1_value,
+    custom_int2_value: item.custom_int2_value,
+    custom_int3_value: item.custom_int3_value,
+    custom_date1_value: item.custom_date1_value,
+    custom_date2_value: item.custom_date2_value,
+    custom_date3_value: item.custom_date3_value,
+    custom_bool1_value: item.custom_bool1_value,
+    custom_bool2_value: item.custom_bool2_value,
+    custom_bool3_value: item.custom_bool3_value,
+    custom_multext1_value: item.custom_multext1_value,
+    custom_multext2_value: item.custom_multext2_value,
+    custom_multext3_value: item.custom_multext3_value,
   };
   const [itemFieldsValues, setItemFieldsValues] = useState(initialFildsValues);
   const [resultMessage, setResultMessage] = useState("");
 
   const dispatch = useDispatch();
 
-  async function createItem() {
+  async function editItem() {
     let checkedItemFieldsValues = { ...itemFieldsValues };
     for (let i = 1; i <= 3; i++) {
       if (itemFieldsValues[`custom_int${i}_value`] === "") {
@@ -51,12 +51,9 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
       tags: JSON.stringify(tags.split(" ")),
       ...checkedItemFieldsValues,
     };
-    const result = await apiService.reqCreateItem(newItem);
+    const result = await apiService.reqEditItem(newItem, item.id);
     if (result.success) {
       setResultMessage({ color: "green", message: result.message });
-      setName("");
-      setTags("");
-      setItemFieldsValues(initialFildsValues);
     } else {
       setResultMessage({ color: "red", message: result.message });
     }
@@ -66,16 +63,16 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
   return (
     <div
       className="modal fade"
-      id="ItemCreateModal"
+      id={`ItemEditModal${item.id}`}
       tabIndex="-1"
-      aria-labelledby="ItemCreateModalLabel"
+      aria-labelledby="ItemEditModalLabel"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="ItemCreateModalLabel">
-              Create new item
+            <h5 className="modal-title" id="ItemEditModalLabel">
+              Edit item
             </h5>
             <button
               type="button"
@@ -136,11 +133,11 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
               Close
             </button>
             <button
-              onClick={createItem}
+              onClick={editItem}
               type="button"
               className="btn btn-primary"
             >
-              Create
+              Save
             </button>
           </div>
         </div>
