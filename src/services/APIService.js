@@ -86,6 +86,17 @@ class APIService {
       response.json()
     );
   }
+
+  async reqCreateItem(newItem) {
+    return await fetch(`${this.host}/items/create`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: newItem }),
+    }).then((response) => response.json());
+  }
 }
 
 export default new APIService();

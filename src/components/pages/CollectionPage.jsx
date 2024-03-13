@@ -3,6 +3,8 @@ import ItemRow from "../UI/ItemRow";
 import apiService from "../../services/APIService";
 import MDEditor from "@uiw/react-md-editor";
 import { useLoaderData } from "react-router-dom";
+import ItemCreateModal from "../UI/ItemCreateModal";
+import { useSelector } from "react-redux";
 
 export function loader({ params }) {
   const collectionPageId = params.collectionId;
@@ -14,6 +16,7 @@ export default function CollectionPage() {
   const [items, setItems] = useState([]);
   const [itemsSchema, setItemsSchema] = useState({});
   const { collectionPageId } = useLoaderData();
+  const trigger = useSelector((state) => state.refetch.trigger);
 
   useEffect(() => {
     (async () => {
@@ -37,7 +40,7 @@ export default function CollectionPage() {
         console.log("Sorry, something went wrong...", e);
       }
     })();
-  }, []);
+  }, [trigger]);
   return (
     <div className="collection-page">
       <div className="title">
@@ -56,129 +59,10 @@ export default function CollectionPage() {
               <th>Id</th>
               <th>Name</th>
               <th>Tags</th>
-              <th
-                style={{
-                  display: itemsSchema.custom_str1_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_str1_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_str2_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_str2_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_str3_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_str3_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_int1_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_int1_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_int2_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_int2_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_int3_name ? "table-cell" : "none",
-                }}
-              >
-                {itemsSchema.custom_int3_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_date1_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_date1_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_date2_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_date2_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_date3_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_date3_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_bool1_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_bool1_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_bool2_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_bool2_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_bool3_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_bool3_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_multext1_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_multext1_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_multext2_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_multext2_name}
-              </th>
-              <th
-                style={{
-                  display: itemsSchema.custom_multext3_name
-                    ? "table-cell"
-                    : "none",
-                }}
-              >
-                {itemsSchema.custom_multext3_name}
-              </th>
+              {Object.values(itemsSchema).map((fieldName) => {
+                if (!fieldName) return null;
+                return <th key={fieldName}>{fieldName}</th>;
+              })}
             </tr>
           </thead>
           <tbody>
@@ -193,12 +77,20 @@ export default function CollectionPage() {
               : null}
             <tr>
               <td>
-                <button>CREATE</button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ItemCreateModal"
+                >
+                  +
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <ItemCreateModal collectionId={collection.id} itemsSchema={itemsSchema} />
     </div>
   );
 }

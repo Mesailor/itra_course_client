@@ -3,7 +3,7 @@ export default function ItemRow({ item, itemsSchema }) {
     <tr>
       <td>{item.id}</td>
       <td>{item.name}</td>
-      <td>{item.tags.map((item) => `${item} `)}</td>
+      <td>{JSON.parse(item.tags).map((item) => `${item} `)}</td>
       <td
         style={{
           display: itemsSchema.custom_str1_name ? "table-cell" : "none",
@@ -48,6 +48,27 @@ export default function ItemRow({ item, itemsSchema }) {
       </td>
       <td
         style={{
+          display: itemsSchema.custom_bool1_name ? "table-cell" : "none",
+        }}
+      >
+        {`${item.custom_bool1_value}`}
+      </td>
+      <td
+        style={{
+          display: itemsSchema.custom_bool2_name ? "table-cell" : "none",
+        }}
+      >
+        {`${item.custom_bool2_value}`}
+      </td>
+      <td
+        style={{
+          display: itemsSchema.custom_bool3_name ? "table-cell" : "none",
+        }}
+      >
+        {`${item.custom_bool3_value}`}
+      </td>
+      <td
+        style={{
           display: itemsSchema.custom_date1_name ? "table-cell" : "none",
         }}
       >
@@ -66,27 +87,6 @@ export default function ItemRow({ item, itemsSchema }) {
         }}
       >
         {item.custom_date3_value}
-      </td>
-      <td
-        style={{
-          display: itemsSchema.custom_bool1_name ? "table-cell" : "none",
-        }}
-      >
-        {item.custom_bool1_value}
-      </td>
-      <td
-        style={{
-          display: itemsSchema.custom_bool2_name ? "table-cell" : "none",
-        }}
-      >
-        {item.custom_bool2_value}
-      </td>
-      <td
-        style={{
-          display: itemsSchema.custom_bool3_name ? "table-cell" : "none",
-        }}
-      >
-        {item.custom_bool3_value}
       </td>
       <td
         style={{
