@@ -1,4 +1,4 @@
-export default function ItemRow({ item, itemsSchema }) {
+export default function ItemRow({ item, itemsSchema, isAuthed }) {
   return (
     <>
       <tr>
@@ -110,24 +110,26 @@ export default function ItemRow({ item, itemsSchema }) {
         >
           {item.custom_multext3_value}
         </td>
-        <td>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target={`#ItemEditModal${item.id}`}
-          >
-            EDIT
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger"
-            data-bs-toggle="modal"
-            data-bs-target={`#ItemDeleteModal${item.id}`}
-          >
-            DELETE
-          </button>
-        </td>
+        {isAuthed ? (
+          <td>
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target={`#ItemEditModal${item.id}`}
+            >
+              EDIT
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target={`#ItemDeleteModal${item.id}`}
+            >
+              DELETE
+            </button>
+          </td>
+        ) : null}
       </tr>
     </>
   );

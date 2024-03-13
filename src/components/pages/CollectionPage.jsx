@@ -10,15 +10,18 @@ import ItemEditModal from "../UI/ItemEditModal";
 
 export function loader({ params }) {
   const collectionPageId = params.collectionId;
-  return { collectionPageId };
+  const userPageId = Number(params.userId);
+  return { collectionPageId, userPageId };
 }
 
 export default function CollectionPage() {
   const [collection, setCollection] = useState({});
   const [items, setItems] = useState([]);
   const [itemsSchema, setItemsSchema] = useState({});
-  const { collectionPageId } = useLoaderData();
+  const { collectionPageId, userPageId } = useLoaderData();
   const trigger = useSelector((state) => state.refetch.trigger);
+  const user = useSelector((state) => state.user);
+  const isAuthed = user.id === userPageId;
 
   useEffect(() => {
     (async () => {
@@ -74,37 +77,47 @@ export default function CollectionPage() {
                     key={item.id}
                     item={item}
                     itemsSchema={itemsSchema}
+                    isAuthed={isAuthed}
                   />
                 ))
               : null}
             <tr>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#ItemCreateModal"
-                >
-                  +
-                </button>
-              </td>
+              {isAuthed ? (
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#ItemCreateModal"
+                  >
+                    +
+                  </button>
+                </td>
+              ) : null}
             </tr>
           </tbody>
         </table>
       </div>
-      <ItemCreateModal collectionId={collection.id} itemsSchema={itemsSchema} />
-      {items.length
-        ? items.map((item) => (
-            <div key={item.id}>
-              <ItemDeleteModal itemId={item.id} />
-              <ItemEditModal
-                collectionId={collection.id}
-                itemsSchema={itemsSchema}
-                item={item}
-              />
-            </div>
-          ))
-        : null}
+      {isAuthed ? (
+        <>
+          <ItemCreateModal
+            collectionId={collection.id}
+            itemsSchema={itemsSchema}
+          />
+          {items.length
+            ? items.map((item) => (
+                <div key={item.id}>
+                  <ItemDeleteModal itemId={item.id} />
+                  <ItemEditModal
+                    collectionId={collection.id}
+                    itemsSchema={itemsSchema}
+                    item={item}
+                  />
+                </div>
+              ))
+            : null}
+        </>
+      ) : null}
     </div>
   );
 }
