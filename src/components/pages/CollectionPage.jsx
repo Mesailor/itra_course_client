@@ -7,6 +7,10 @@ import ItemCreateModal from "../UI/ItemCreateModal";
 import { useSelector } from "react-redux";
 import ItemDeleteModal from "../UI/ItemDeleteModal";
 import ItemEditModal from "../UI/ItemEditModal";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { FilterMatchMode } from "primereact/api";
+import { InputText } from "primereact/inputtext";
 
 export function loader({ params }) {
   const collectionPageId = params.collectionId;
@@ -22,6 +26,12 @@ export default function CollectionPage() {
   const trigger = useSelector((state) => state.refetch.trigger);
   const user = useSelector((state) => state.user);
   const isAuthed = user.id === userPageId;
+  const [filters, setFilters] = useState({
+    global: {
+      value: null,
+      matchMode: FilterMatchMode.CONTAINS,
+    },
+  });
 
   useEffect(() => {
     (async () => {
@@ -46,6 +56,33 @@ export default function CollectionPage() {
       }
     })();
   }, [trigger]);
+
+  function controls(item) {
+    return (
+      <>
+        {isAuthed ? (
+          <>
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target={`#ItemEditModal${item.id}`}
+            >
+              EDIT
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target={`#ItemDeleteModal${item.id}`}
+            >
+              DELETE
+            </button>
+          </>
+        ) : null}
+      </>
+    );
+  }
   return (
     <div className="collection-page">
       <div className="title">
@@ -58,45 +95,43 @@ export default function CollectionPage() {
         </div>
       </div>
       <div className="table" style={{ overflow: "auto" }}>
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>Tags</th>
-              {Object.values(itemsSchema).map((fieldName) => {
-                if (!fieldName) return null;
-                return <th key={fieldName}>{fieldName}</th>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {items.length
-              ? items.map((item) => (
-                  <ItemRow
-                    key={item.id}
-                    item={item}
-                    itemsSchema={itemsSchema}
-                    isAuthed={isAuthed}
-                  />
-                ))
-              : null}
-            <tr>
-              {isAuthed ? (
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#ItemCreateModal"
-                  >
-                    +
-                  </button>
-                </td>
-              ) : null}
-            </tr>
-          </tbody>
-        </table>
+        <InputText
+          onChange={(e) => {
+            setFilters({
+              global: {
+                value: e.target.value,
+                matchMode: FilterMatchMode.CONTAINS,
+              },
+            });
+          }}
+        />
+        <DataTable value={items} filters={filters}>
+          <Column field="id" header="id" sortable></Column>
+          <Column field="name" header="name" sortable></Column>
+          <Column field="tags" header="tags" sortable></Column>
+          {Object.entries(itemsSchema).map(([key, value]) => {
+            if (!value) return null;
+            return (
+              <Column
+                key={key}
+                field={`custom_${key.split("_")[1]}_value`}
+                header={value}
+                sortable
+              ></Column>
+            );
+          })}
+          <Column field="id" header="*" body={controls}></Column>
+        </DataTable>
+        {isAuthed ? (
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#ItemCreateModal"
+          >
+            +
+          </button>
+        ) : null}
       </div>
       {isAuthed ? (
         <>
