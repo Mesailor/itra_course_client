@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { triggerRefetch } from "../../store/refetchSlice";
 import ItemValuesEditor from "./ItemValuesEditor";
 
-export default function ItemEditModal({ collectionId, itemsSchema, item }) {
+export default function ItemEditModal({ itemsSchema, item }) {
   const [name, setName] = useState(item.name);
   const [tags, setTags] = useState(JSON.parse(item.tags).join(" "));
   const initialFildsValues = {
@@ -31,13 +31,21 @@ export default function ItemEditModal({ collectionId, itemsSchema, item }) {
 
   async function editItem() {
     let checkedItemFieldsValues = { ...itemFieldsValues };
+    let trimmedName = name.trim();
+    let trimmedTags = tags.trim();
     for (let i = 1; i <= 3; i++) {
+      checkedItemFieldsValues[`custom_str${i}_value`] =
+        itemFieldsValues[`custom_str${i}_value`].trim();
+
+      checkedItemFieldsValues[`custom_multext${i}_value`] =
+        itemFieldsValues[`custom_multext${i}_value`].trim();
+
       if (itemFieldsValues[`custom_int${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_int${i}_value`] = "0";
+        checkedItemFieldsValues[`custom_int${i}_value`] = 0;
       }
 
       if (itemFieldsValues[`custom_date${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_date${i}_value`] = "1970-01-01";
+        checkedItemFieldsValues[`custom_date${i}_value`] = Date.now();
       }
 
       if (itemFieldsValues[`custom_bool${i}_value`] === "") {
@@ -46,9 +54,8 @@ export default function ItemEditModal({ collectionId, itemsSchema, item }) {
     }
 
     const newItem = {
-      collection_id: collectionId,
-      name,
-      tags: JSON.stringify(tags.split(" ")),
+      name: trimmedName,
+      tags: JSON.stringify(trimmedTags.split(" ")),
       ...checkedItemFieldsValues,
     };
     const result = await apiService.reqEditItem(newItem, item.id);

@@ -108,11 +108,7 @@ export default function CollectionPage() {
             ? items.map((item) => (
                 <div key={item.id}>
                   <ItemDeleteModal itemId={item.id} />
-                  <ItemEditModal
-                    collectionId={collection.id}
-                    itemsSchema={itemsSchema}
-                    item={item}
-                  />
+                  <ItemEditModal itemsSchema={itemsSchema} item={item} />
                 </div>
               ))
             : null}

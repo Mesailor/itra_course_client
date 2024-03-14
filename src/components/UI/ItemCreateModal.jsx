@@ -14,9 +14,9 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
     custom_int1_value: 0,
     custom_int2_value: 0,
     custom_int3_value: 0,
-    custom_date1_value: "1970-01-01",
-    custom_date2_value: "1970-01-01",
-    custom_date3_value: "1970-01-01",
+    custom_date1_value: "",
+    custom_date2_value: "",
+    custom_date3_value: "",
     custom_bool1_value: false,
     custom_bool2_value: false,
     custom_bool3_value: false,
@@ -31,13 +31,21 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
 
   async function createItem() {
     let checkedItemFieldsValues = { ...itemFieldsValues };
+    let trimmedName = name.trim();
+    let trimmedTags = tags.trim();
     for (let i = 1; i <= 3; i++) {
+      checkedItemFieldsValues[`custom_str${i}_value`] =
+        itemFieldsValues[`custom_str${i}_value`].trim();
+
+      checkedItemFieldsValues[`custom_multext${i}_value`] =
+        itemFieldsValues[`custom_multext${i}_value`].trim();
+
       if (itemFieldsValues[`custom_int${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_int${i}_value`] = "0";
+        checkedItemFieldsValues[`custom_int${i}_value`] = 0;
       }
 
       if (itemFieldsValues[`custom_date${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_date${i}_value`] = "1970-01-01";
+        checkedItemFieldsValues[`custom_date${i}_value`] = Date.now();
       }
 
       if (itemFieldsValues[`custom_bool${i}_value`] === "") {
@@ -47,8 +55,8 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
 
     const newItem = {
       collection_id: collectionId,
-      name,
-      tags: JSON.stringify(tags.split(" ")),
+      name: trimmedName,
+      tags: JSON.stringify(trimmedTags.split(" ")),
       ...checkedItemFieldsValues,
     };
     const result = await apiService.reqCreateItem(newItem);
