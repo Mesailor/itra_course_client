@@ -4,7 +4,7 @@ class APIService {
   host = APIServiceConfig.host;
 
   async sendAuthReq(userCredentials) {
-    return await fetch(`${this.host}/auth`, {
+    return await fetch(`${this.host}/account`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -15,7 +15,7 @@ class APIService {
   }
 
   async sendSignupReq(newUser) {
-    return await fetch(`${this.host}/signup`, {
+    return await fetch(`${this.host}/account/signup`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -76,7 +76,7 @@ class APIService {
   }
 
   async getCollection(collectionId) {
-    return await fetch(`${this.host}/collection/${collectionId}`).then(
+    return await fetch(`${this.host}/collections/only/${collectionId}`).then(
       (response) => response.json()
     );
   }
