@@ -11,6 +11,7 @@ const userSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
+      window.sessionStorage.setItem("user", JSON.stringify(action.payload));
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.isAdmin = action.payload.isAdmin;
