@@ -28,7 +28,7 @@ export default function UserPage() {
       }
       setCollections(result.collections);
     })();
-  }, [trigger]);
+  }, [trigger, usersPageId]);
 
   return (
     <div className="user-page">
