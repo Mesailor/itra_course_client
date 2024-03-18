@@ -25,10 +25,27 @@ class APIService {
     }).then((response) => response.json());
   }
 
-  async getCollections(user_id) {
+  async getAllCollections(user_id) {
     return await fetch(`${this.host}/collections/${user_id}`).then((response) =>
       response.json()
     );
+  }
+
+  async getCollection(collectionId) {
+    return await fetch(`${this.host}/collections/one/${collectionId}`).then(
+      (response) => response.json()
+    );
+  }
+
+  async getManyCollections(collectionIds) {
+    return await fetch(`${this.host}/collections/many`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ payload: collectionIds }),
+    }).then((response) => response.json());
   }
 
   async reqCreateColl(newCollection) {
@@ -73,12 +90,6 @@ class APIService {
       },
       body: JSON.stringify({ payload: { newCollection, collectionId } }),
     }).then((response) => response.json());
-  }
-
-  async getCollection(collectionId) {
-    return await fetch(`${this.host}/collections/only/${collectionId}`).then(
-      (response) => response.json()
-    );
   }
 
   async getItems(collectionId) {

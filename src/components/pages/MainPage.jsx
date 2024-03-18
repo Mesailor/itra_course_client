@@ -6,16 +6,17 @@ import { useSelector } from "react-redux";
 
 export default function MainPage() {
   const [recentCollections, setRecentCollections] = React.useState([]);
-  const recentCollectionsIds = useSelector((store) => store.recentCollIds);
+  const recentCollectionIds = useSelector((store) => store.recentCollIds);
 
   React.useEffect(() => {
     (async () => {
-      let recentCollections = [];
-      for (let id of recentCollectionsIds) {
-        const { collection } = await apiService.getCollection(id);
-        recentCollections.push(collection);
-      }
-      setRecentCollections(recentCollections);
+      const result = await apiService.getManyCollections(recentCollectionIds);
+      const collections = recentCollectionIds.map((id) => {
+        for (let collection of result.collections) {
+          if (collection.id == id) return collection;
+        }
+      });
+      setRecentCollections(collections);
     })();
   }, []);
 
