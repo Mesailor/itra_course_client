@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 export default function MainPage() {
   const [recentCollections, setRecentCollections] = useState([]);
-  const [LargestColls, setLargestColls] = useState([]);
+  const [largestColls, setLargestColls] = useState([]);
   const recentCollectionIds = useSelector((store) => store.recentCollIds);
 
   useEffect(() => {
@@ -15,12 +15,14 @@ export default function MainPage() {
       const resultRecentColls = await apiService.getManyCollections(
         recentCollectionIds
       );
-      const collections = recentCollectionIds.map((id) => {
-        for (let collection of resultRecentColls.collections) {
-          if (collection.id == id) return collection;
-        }
-      });
-      setRecentCollections(collections);
+      if (resultRecentColls.success) {
+        const collections = recentCollectionIds.map((id) => {
+          for (let collection of resultRecentColls.collections) {
+            if (collection.id == id) return collection;
+          }
+        });
+        setRecentCollections(collections);
+      }
 
       const resultLargestColls = await apiService.getFiveLargestColls();
       if (resultLargestColls.success) {
@@ -57,8 +59,8 @@ export default function MainPage() {
         <div className="top--largest">
           <h3>Top Largest</h3>
           <ul>
-            {LargestColls.length ? (
-              LargestColls.map((collection) => (
+            {largestColls.length ? (
+              largestColls.map((collection) => (
                 <li key={collection.id}>
                   <Collection collection={collection} />
                 </li>

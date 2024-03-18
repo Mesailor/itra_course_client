@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setUser } from "../../store/userSlice";
+import { resetRecentIds } from "../../store/recentCollIdsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -9,6 +10,7 @@ export default function RootLayout() {
 
   function logout() {
     dispatch(setUser({ name: "", isAdmin: false }));
+    dispatch(resetRecentIds());
   }
 
   const navigate = useNavigate();
