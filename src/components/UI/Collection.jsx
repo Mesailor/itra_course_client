@@ -1,13 +1,10 @@
 import MDEditor from "@uiw/react-md-editor";
 import CollDeleteModal from "./CollDeleteModal";
 import CollEditModal from "./CollEditModal";
-import { useContext } from "react";
-import { UserPageContext } from "../../context/UserPageContext";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Collection({ collection }) {
-  const { usersPageId } = useContext(UserPageContext);
   const user = useSelector((store) => store.user);
   return (
     <div className="collection">
@@ -22,9 +19,11 @@ export default function Collection({ collection }) {
         <h6>Description: </h6>
         <MDEditor.Markdown source={collection.description} />
       </div>
-      <Link to={`collection/${collection.id}`}>View collection</Link>
+      <Link to={`/user/${collection.user_id}/collection/${collection.id}`}>
+        View collection
+      </Link>
 
-      {usersPageId === user.id ? (
+      {collection.user_id === user.id ? (
         <>
           <button
             type="button"

@@ -1,22 +1,31 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import apiService from "../../services/APIService";
 import CollectionSm from "../UI/CollectionSm";
+import Collection from "../UI/Collection";
 import { useSelector } from "react-redux";
 
 export default function MainPage() {
-  const [recentCollections, setRecentCollections] = React.useState([]);
+  const [recentCollections, setRecentCollections] = useState([]);
+  const [LargestColls, setLargestColls] = useState([]);
   const recentCollectionIds = useSelector((store) => store.recentCollIds);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
-      const result = await apiService.getManyCollections(recentCollectionIds);
+      const resultRecentColls = await apiService.getManyCollections(
+        recentCollectionIds
+      );
       const collections = recentCollectionIds.map((id) => {
-        for (let collection of result.collections) {
+        for (let collection of resultRecentColls.collections) {
           if (collection.id == id) return collection;
         }
       });
       setRecentCollections(collections);
+
+      const resultLargestColls = await apiService.getFiveLargestColls();
+      if (resultLargestColls.success) {
+        setLargestColls(resultLargestColls.collections);
+      }
     })();
   }, []);
 
@@ -44,6 +53,20 @@ export default function MainPage() {
               )}
             </ul>
           </div>
+        </div>
+        <div className="top--largest">
+          <h3>Top Largest</h3>
+          <ul>
+            {LargestColls.length ? (
+              LargestColls.map((collection) => (
+                <li key={collection.id}>
+                  <Collection collection={collection} />
+                </li>
+              ))
+            ) : (
+              <p>No collections exist yet</p>
+            )}
+          </ul>
         </div>
         <p>
           <Link to="/user/1">1</Link>

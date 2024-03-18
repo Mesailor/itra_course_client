@@ -26,8 +26,8 @@ class APIService {
   }
 
   async getAllCollections(user_id) {
-    return await fetch(`${this.host}/collections/${user_id}`).then((response) =>
-      response.json()
+    return await fetch(`${this.host}/collections/user-${user_id}`).then(
+      (response) => response.json()
     );
   }
 
@@ -46,6 +46,12 @@ class APIService {
       },
       body: JSON.stringify({ payload: collectionIds }),
     }).then((response) => response.json());
+  }
+
+  async getFiveLargestColls() {
+    return await fetch(`${this.host}/collections/largest`).then((response) =>
+      response.json()
+    );
   }
 
   async reqCreateColl(newCollection) {
