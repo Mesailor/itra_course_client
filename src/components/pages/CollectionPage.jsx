@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import apiService from "../../services/APIService";
 import MDEditor from "@uiw/react-md-editor";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import ItemCreateModal from "../UI/ItemCreateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { insertRecentId } from "../../store/recentCollIdsSlice";
@@ -108,7 +108,21 @@ export default function CollectionPage() {
           }}
         />
         <DataTable value={items} filters={filters}>
-          <Column field="id" header="id" sortable></Column>
+          <Column
+            field="id"
+            header="id"
+            body={({ id }) => {
+              return (
+                <>
+                  {id}
+                  <Link className="btn btn-success" to={`item/${id}`}>
+                    Open
+                  </Link>
+                </>
+              );
+            }}
+            sortable
+          ></Column>
           <Column field="name" header="name" sortable></Column>
           <Column field="tags" header="tags" sortable></Column>
           {Object.entries(itemsSchema).map(([key, value]) => {

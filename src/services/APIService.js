@@ -104,6 +104,12 @@ class APIService {
     );
   }
 
+  async getItem(itemId) {
+    return await fetch(`${this.host}/items/one/${itemId}`).then((response) =>
+      response.json()
+    );
+  }
+
   async reqCreateItem(newItem) {
     return await fetch(`${this.host}/items/create`, {
       method: "POST",
