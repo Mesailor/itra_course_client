@@ -1,17 +1,20 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import RootLayout from "./components/pages/RootLayout";
 import MainPage from "./components/pages/MainPage";
 import LoginPage from "./components/pages/LoginPage";
 import SignupPage from "./components/pages/SignupPage";
 import ErrorPage from "./components/pages/ErrorPage";
+import { UserPageProvider } from "./context/UserPageContext";
 import UserPage, {
   loader as userPageLoader,
 } from "./components/pages/UserPage";
-import RootLayout from "./components/pages/RootLayout";
-import { UserPageProvider } from "./context/UserPageContext";
 import CollectionPage, {
   loader as collectionPageLoader,
 } from "./components/pages/CollectionPage";
+import ItemPage, {
+  loader as ItemPageLoader,
+} from "./components/pages/ItemPage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +39,11 @@ const router = createBrowserRouter([
         path: "user/:userId/collection/:collectionId",
         loader: collectionPageLoader,
         element: <CollectionPage />,
+      },
+      {
+        path: "user/:userId/collection/:collectionId/item/:itemId",
+        loader: ItemPageLoader,
+        element: <ItemPage />,
       },
     ],
   },

@@ -22,13 +22,13 @@ export default function UserPage() {
   useEffect(() => {
     setUsersPageId(Number(usersPageId));
     (async function () {
-      const result = await apiService.getCollections(usersPageId);
+      const result = await apiService.getAllCollections(usersPageId);
       if (result.status === 404) {
         return navigate("/main");
       }
       setCollections(result.collections);
     })();
-  }, [trigger]);
+  }, [trigger, usersPageId]);
 
   return (
     <div className="user-page">

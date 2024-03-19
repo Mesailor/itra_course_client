@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import ItemRow from "../UI/ItemRow";
 import apiService from "../../services/APIService";
 import MDEditor from "@uiw/react-md-editor";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import ItemCreateModal from "../UI/ItemCreateModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { insertRecentId } from "../../store/recentCollIdsSlice";
 import ItemDeleteModal from "../UI/ItemDeleteModal";
 import ItemEditModal from "../UI/ItemEditModal";
 import { DataTable } from "primereact/datatable";
@@ -19,6 +19,7 @@ export function loader({ params }) {
 }
 
 export default function CollectionPage() {
+  const dispatch = useDispatch();
   const [collection, setCollection] = useState({});
   const [items, setItems] = useState([]);
   const [itemsSchema, setItemsSchema] = useState({});
@@ -34,6 +35,7 @@ export default function CollectionPage() {
   });
 
   useEffect(() => {
+    dispatch(insertRecentId(collectionPageId));
     (async () => {
       try {
         const resultCollection = await apiService.getCollection(
@@ -106,7 +108,21 @@ export default function CollectionPage() {
           }}
         />
         <DataTable value={items} filters={filters}>
-          <Column field="id" header="id" sortable></Column>
+          <Column
+            field="id"
+            header="id"
+            body={({ id }) => {
+              return (
+                <>
+                  {id}
+                  <Link className="btn btn-success" to={`item/${id}`}>
+                    Open
+                  </Link>
+                </>
+              );
+            }}
+            sortable
+          ></Column>
           <Column field="name" header="name" sortable></Column>
           <Column field="tags" header="tags" sortable></Column>
           {Object.entries(itemsSchema).map(([key, value]) => {
