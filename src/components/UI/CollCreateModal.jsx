@@ -105,7 +105,10 @@ export default function CollCreateModal() {
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-      onClick={resetResultMessage}
+      onClick={(e) => {
+        if (e.target !== e.currentTarget) return;
+        resetResultMessage();
+      }}
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
