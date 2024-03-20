@@ -6,6 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import ItemsSchemaEditor from "./ItemsSchemaEditor";
 import { triggerRefetch } from "../../store/refetchSlice";
 import MDEditor from "@uiw/react-md-editor";
+import { validateCollectionData } from "../../services/ValidationService";
 
 export default function CollEditModal({ collection }) {
   const dispatch = useDispatch();
@@ -49,6 +50,13 @@ export default function CollEditModal({ collection }) {
       imageUrl,
       itemsSchema: JSON.stringify(itemsSchema),
     };
+
+    const validationError = validateCollectionData(newCollection);
+    if (validationError) {
+      setIsLoading(false);
+      return setResultMessage({ color: "red", message: validationError });
+    }
+
     try {
       const result = await apiService.reqUpdateColl(
         newCollection,

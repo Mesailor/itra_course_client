@@ -3,6 +3,7 @@ import apiService from "../../services/APIService";
 import { useDispatch } from "react-redux";
 import { triggerRefetch } from "../../store/refetchSlice";
 import ItemValuesEditor from "./ItemValuesEditor";
+import { validateItemData } from "../../services/ValidationService";
 
 export default function ItemCreateModal({ collectionId, itemsSchema }) {
   const [name, setName] = useState("");
@@ -25,11 +26,15 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
     custom_multext3_value: "",
   };
   const [itemFieldsValues, setItemFieldsValues] = useState(initialFildsValues);
-  const [resultMessage, setResultMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [resultMessage, setResultMessage] = useState({});
 
   const dispatch = useDispatch();
 
   async function createItem() {
+    if (isLoading) return;
+    setIsLoading(true);
+
     let checkedItemFieldsValues = { ...itemFieldsValues };
     let trimmedName = name.trim();
     let trimmedTags = tags.trim();
@@ -59,13 +64,22 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
       tags: JSON.stringify(trimmedTags.split(" ")),
       ...checkedItemFieldsValues,
     };
+
+    const validationError = validateItemData(newItem);
+    if (validationError) {
+      setIsLoading(false);
+      return setResultMessage({ color: "red", message: validationError });
+    }
+
     const result = await apiService.reqCreateItem(newItem);
     if (result.success) {
+      setIsLoading(false);
       setResultMessage({ color: "green", message: result.message });
       setName("");
       setTags("");
       setItemFieldsValues(initialFildsValues);
     } else {
+      setIsLoading(false);
       setResultMessage({ color: "red", message: result.message });
     }
     dispatch(triggerRefetch());
@@ -90,9 +104,6 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => {
-                setResultMessage("");
-              }}
             ></button>
           </div>
           <div className="modal-body">
@@ -126,20 +137,19 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
             />
           </div>
           <div className="modal-footer">
-            <div className="result-message text-center">
-              {resultMessage ? (
-                <h5 style={{ color: resultMessage.color }}>
+            <div className="result-message m-auto">
+              {isLoading ? (
+                <div className="spinner-border" role="status"></div>
+              ) : (
+                <h5 className="m-auto" style={{ color: resultMessage.color }}>
                   {resultMessage.message}
                 </h5>
-              ) : null}
+              )}
             </div>
             <button
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
-              onClick={() => {
-                setResultMessage("");
-              }}
             >
               Close
             </button>

@@ -19,3 +19,25 @@ export function validateSignupForm(name, password) {
     return "Password should have only letters, digits and special symbols";
   }
 }
+
+export function validateCollectionData(collection) {
+  if (collection.name.length < 1) {
+    return "Collection name should not be shorter than 1 character";
+  }
+  if (collection.name.length > 255) {
+    return "Collection name should be shorter than 255 characters";
+  }
+}
+
+export function validateItemData(item) {
+  if (item.name.length > 255) {
+    return "Item name shouldn't be longer than 255 characters";
+  }
+  if (
+    item.custom_str1_value.length > 255 ||
+    item.custom_str2_value.length > 255 ||
+    item.custom_str3_value.length > 255
+  ) {
+    return "Values of your custom string fields shouldn't be longer than 255 characters";
+  }
+}
