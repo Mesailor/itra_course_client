@@ -22,27 +22,140 @@ export default function RootLayout() {
   });
   return (
     <div className="root-layout">
-      <header
-        style={{ backgroundColor: "#efefef" }}
-        className="container-fluid p-3 pe-5 d-flex align-items-center justify-content-between"
-      >
-        <h1>
-          <Link style={{ textDecoration: "none" }} to="/main">
-            Web Collections App
-          </Link>
-        </h1>
-        {user.name ? (
-          <div>
-            <Link className="m-2" to={`user/${user.id}`}>
-              Personal Collections
-            </Link>
-            <Link className="m-2" onClick={logout} to="/main">
-              Log out
-            </Link>
+      <header>
+        <nav className="navbar navbar-light bg-light">
+          <div className="container-fluid row pe-0">
+            <div className="col-md-4 col-2">
+              <Link className="nav-link px-0" to="/main">
+                <div className="d-flex align-items-center">
+                  <img
+                    style={{ width: "2em", height: "2em" }}
+                    className="bg-primary rounded-circle me-2"
+                    src="/src/assets/my_collections_logo.png"
+                    alt="my_collections_logo"
+                  />
+                  <h1 className="d-none d-md-block">My Collections</h1>
+                </div>
+              </Link>
+            </div>
+            <div className="col-md-6 col-8">
+              <form
+                className="d-flex ms-2 align-items-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  alert("Search isn't implemented yet...");
+                }}
+              >
+                <input
+                  className="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                />
+              </form>
+            </div>
+            <div className="col-2 d-flex justify-content-end">
+              {user.name ? (
+                <>
+                  <div className="d-none d-md-block">
+                    <Link
+                      className="d-block btn btn-outline-primary m-2"
+                      to={`user/${user.id}`}
+                    >
+                      Personal Collections
+                    </Link>
+                    <Link
+                      className="d-block btn btn-sm btn-secondary m-2"
+                      onClick={logout}
+                      to="/main"
+                    >
+                      Log out
+                    </Link>
+                  </div>
+                  <a
+                    className="d-block d-md-none btn btn-primary"
+                    data-bs-toggle="collapse"
+                    href="#collapseAccount"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="collapseAccount"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-list"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                  </a>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="d-none d-md-block btn btn-outline-primary"
+                    to="/log-in"
+                  >
+                    Log in
+                  </Link>
+                  <a
+                    className="d-block d-md-none btn btn-primary"
+                    data-bs-toggle="collapse"
+                    href="#collapseAccount"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="collapseAccount"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-list"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                  </a>
+                </>
+              )}
+            </div>
           </div>
-        ) : (
-          <Link to="/log-in">Log in</Link>
-        )}
+          <div className="row w-100 ms-1 mt-2 d-flex justify-content-end">
+            <div className="col collapse" id="collapseAccount">
+              <div className="card card-body">
+                <div className="d-flex justify-content-around">
+                  {user.name ? (
+                    <>
+                      <Link className="nav-link m-2" to={`user/${user.id}`}>
+                        Personal Collections
+                      </Link>
+                      <Link
+                        className="nav-link m-2"
+                        onClick={logout}
+                        to="/main"
+                      >
+                        Log out
+                      </Link>
+                    </>
+                  ) : (
+                    <Link className="d-block nav-link" to="/log-in">
+                      Log in
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
       </header>
       <div className="container">
         <Outlet />
