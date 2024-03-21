@@ -46,7 +46,7 @@ export default function LoginPage() {
   return (
     <div className="login-page container vh-100 d-flex align-items-center">
       <div
-        style={{ width: "35%" }}
+        style={{ width: "450px" }}
         className="login-form m-auto align-middle d-flex flex-column text-center"
       >
         <h2 className="m-3">Log in to your account</h2>
