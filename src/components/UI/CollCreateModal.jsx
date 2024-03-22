@@ -132,15 +132,19 @@ export default function CollCreateModal() {
               onClick={resetResultMessage}
             ></button>
           </div>
-          <div className="modal-body">
+          <div className="modal-body text-start">
             <div className="d-flex flex-column">
-              <label htmlFor="image">Image: </label>
+              <label className="from-label" htmlFor="image">
+                Image:
+              </label>
               <input
+                className="form-control mb-3"
                 onChange={updateImage}
                 name="image"
                 type="file"
                 accept="image/png, image/jpeg"
                 value={imagePath}
+                id="image"
               />
               <label className="form-label" htmlFor="name">
                 Name:
@@ -149,16 +153,19 @@ export default function CollCreateModal() {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
-                className="form-control"
+                className="form-control mb-3"
                 name="name"
                 value={name}
                 required
               />
-              <label htmlFor="topic">Topic: </label>
+              <label className="form-label" htmlFor="topic">
+                Topic:
+              </label>
               <select
                 onChange={(e) => {
                   setTopic(e.target.value);
                 }}
+                className="form-select mb-3"
                 name="topic"
                 id="topic"
                 value={topic}
@@ -170,7 +177,7 @@ export default function CollCreateModal() {
               </select>
               <div className="markdown-description">
                 <label htmlFor="description">Description: </label>
-                <div className="markdown" data-color-mode="light">
+                <div className="markdown mb-3" data-color-mode="light">
                   <MDEditor value={description} onChange={setDescription} />
                 </div>
               </div>
