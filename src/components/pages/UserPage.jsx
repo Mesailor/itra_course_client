@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import CollectionsList from "../UI/CollectionsList";
 import CollCreateModal from "../UI/CollCreateModal";
 import apiService from "../../services/APIService";
 import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { UserPageContext } from "../../context/UserPageContext";
+import Collection from "../UI/Collection";
 
 export function loader({ params }) {
   const usersPageId = params.userId;
@@ -17,14 +17,15 @@ export default function UserPage() {
   const user = useSelector((store) => store.user);
   const trigger = useSelector((store) => store.refetch.trigger);
   const { usersPageId } = useLoaderData();
-  const navigate = useNavigate();
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
+    setResultMessage("");
     setUsersPageId(Number(usersPageId));
     (async function () {
       const result = await apiService.getAllCollections(usersPageId);
-      if (result.status === 404) {
-        return navigate("/main");
+      if (result.status !== 200) {
+        return setResultMessage(result.message);
       }
       setCollections(result.collections);
     })();
@@ -32,18 +33,33 @@ export default function UserPage() {
 
   return (
     <div className="user-page">
-      <CollectionsList collections={collections}></CollectionsList>
+      <h3 className="display-3 text-center my-3">Personal Collections</h3>
+      <div className="collections-list">
+        {collections.length ? (
+          collections.map((collection) => (
+            <Collection key={collection.id} collection={collection} />
+          ))
+        ) : resultMessage ? (
+          <div className="text-danger text-center my-4">
+            <h1>{resultMessage}</h1>
+          </div>
+        ) : (
+          <div style={{ width: "50px" }} className="mx-auto my-4">
+            <div className="spinner-border" role="status"></div>
+          </div>
+        )}
+      </div>
       {Number(usersPageId) === user.id ? (
-        <>
+        <div className="text-center">
           <button
-            className="add-new-collection"
+            className="btn btn-primary my-2 mb-4"
             data-bs-toggle="modal"
             data-bs-target="#CollCreateModal"
           >
-            ADD NEW COLLECTION
+            <strong>ADD NEW COLLECTION</strong>
           </button>
           <CollCreateModal />
-        </>
+        </div>
       ) : null}
     </div>
   );
