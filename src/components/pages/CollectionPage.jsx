@@ -26,7 +26,7 @@ export default function CollectionPage() {
   const { collectionPageId, userPageId } = useLoaderData();
   const trigger = useSelector((state) => state.refetch.trigger);
   const user = useSelector((state) => state.user);
-  const isAuthed = user.id === userPageId;
+  const [isAuthed, setIsAuthed] = useState(false);
   const [filters, setFilters] = useState({
     global: {
       value: null,
@@ -53,6 +53,7 @@ export default function CollectionPage() {
         setItems(resultItems.items);
 
         setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
+        setIsAuthed(resultCollection.collection.user_id === user.id);
       } catch (e) {
         console.log("Sorry, something went wrong...", e);
       }

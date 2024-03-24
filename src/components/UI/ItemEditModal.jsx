@@ -3,6 +3,7 @@ import apiService from "../../services/APIService";
 import { useDispatch } from "react-redux";
 import { triggerRefetch } from "../../store/refetchSlice";
 import ItemValuesEditor from "./ItemValuesEditor";
+import { validateItemData } from "../../services/ValidationService";
 
 export default function ItemEditModal({ itemsSchema, item }) {
   const [name, setName] = useState(item.name);
@@ -25,11 +26,15 @@ export default function ItemEditModal({ itemsSchema, item }) {
     custom_multext3_value: item.custom_multext3_value,
   };
   const [itemFieldsValues, setItemFieldsValues] = useState(initialFildsValues);
-  const [resultMessage, setResultMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [resultMessage, setResultMessage] = useState({});
 
   const dispatch = useDispatch();
 
   async function editItem() {
+    if (isLoading) return;
+    setIsLoading(true);
+
     let checkedItemFieldsValues = { ...itemFieldsValues };
     let trimmedName = name.trim();
     let trimmedTags = tags.trim();
@@ -58,10 +63,19 @@ export default function ItemEditModal({ itemsSchema, item }) {
       tags: JSON.stringify(trimmedTags.split(" ")),
       ...checkedItemFieldsValues,
     };
+
+    const validationError = validateItemData(newItem);
+    if (validationError) {
+      setIsLoading(false);
+      return setResultMessage({ color: "red", message: validationError });
+    }
+
     const result = await apiService.reqEditItem(newItem, item.id);
     if (result.success) {
+      setIsLoading(false);
       setResultMessage({ color: "green", message: result.message });
     } else {
+      setIsLoading(false);
       setResultMessage({ color: "red", message: result.message });
     }
     dispatch(triggerRefetch());
@@ -122,12 +136,14 @@ export default function ItemEditModal({ itemsSchema, item }) {
             />
           </div>
           <div className="modal-footer">
-            <div className="result-message text-center">
-              {resultMessage ? (
-                <h5 style={{ color: resultMessage.color }}>
+            <div className="result-message m-auto">
+              {isLoading ? (
+                <div className="spinner-border" role="status"></div>
+              ) : (
+                <h5 className="m-auto" style={{ color: resultMessage.color }}>
                   {resultMessage.message}
                 </h5>
-              ) : null}
+              )}
             </div>
             <button
               type="button"

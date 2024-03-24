@@ -50,8 +50,8 @@ export default function RegPage() {
   return (
     <div className="signup-page container vh-100 d-flex align-items-center">
       <div
-        style={{ width: "35%" }}
-        className="signup-form  m-auto align-middle d-flex flex-column text-center"
+        style={{ width: "450px" }}
+        className="signup-form m-auto align-middle d-flex flex-column text-center"
       >
         <h2 className="m-3">Create an account</h2>
         {errorMessage ? (

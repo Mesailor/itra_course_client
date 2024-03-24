@@ -9,6 +9,7 @@ export default function MainPage() {
   const [recentCollections, setRecentCollections] = useState([]);
   const [largestColls, setLargestColls] = useState([]);
   const recentCollectionIds = useSelector((store) => store.recentCollIds);
+  const trigger = useSelector((store) => store.refetch.trigger);
 
   useEffect(() => {
     (async () => {
@@ -29,7 +30,7 @@ export default function MainPage() {
         setLargestColls(resultLargestColls.collections);
       }
     })();
-  }, []);
+  }, [trigger]);
 
   return (
     <div className="main-page">
