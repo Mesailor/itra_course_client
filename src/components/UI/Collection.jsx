@@ -1,6 +1,4 @@
 import MDEditor from "@uiw/react-md-editor";
-import CollDeleteModal from "./CollDeleteModal";
-import CollEditModal from "./CollEditModal";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -42,8 +40,6 @@ export default function Collection({ collection }) {
                   <i className="bi bi-trash-fill"></i>
                 </button>
               </div>
-              <CollDeleteModal collectionId={collection.id} />
-              <CollEditModal collection={collection} />
             </>
           ) : (
             <Link
