@@ -23,11 +23,16 @@ export default function UserPage() {
     setResultMessage("");
     setUsersPageId(Number(usersPageId));
     (async function () {
-      const result = await apiService.getAllCollections(usersPageId);
-      if (result.status !== 200) {
-        return setResultMessage(result.message);
+      try {
+        const result = await apiService.getAllCollections(usersPageId);
+        if (result.status !== 200) {
+          return setResultMessage(result.message);
+        }
+        setCollections(result.collections);
+      } catch (e) {
+        console.error(e);
+        setResultMessage(e.message);
       }
-      setCollections(result.collections);
     })();
   }, [trigger, usersPageId]);
 
@@ -36,9 +41,23 @@ export default function UserPage() {
       <h3 className="display-3 text-center my-3">Personal Collections</h3>
       <div className="collections-list">
         {collections.length ? (
-          collections.map((collection) => (
-            <Collection key={collection.id} collection={collection} />
-          ))
+          <div>
+            {collections.map((collection) => (
+              <Collection key={collection.id} collection={collection} />
+            ))}
+            {Number(usersPageId) === user.id ? (
+              <div className="text-center">
+                <button
+                  className="btn btn-primary my-2 mb-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#CollCreateModal"
+                >
+                  <strong>ADD NEW COLLECTION</strong>
+                </button>
+                <CollCreateModal />
+              </div>
+            ) : null}
+          </div>
         ) : resultMessage ? (
           <div className="text-danger text-center my-4">
             <h1>{resultMessage}</h1>
@@ -49,18 +68,6 @@ export default function UserPage() {
           </div>
         )}
       </div>
-      {Number(usersPageId) === user.id ? (
-        <div className="text-center">
-          <button
-            className="btn btn-primary my-2 mb-4"
-            data-bs-toggle="modal"
-            data-bs-target="#CollCreateModal"
-          >
-            <strong>ADD NEW COLLECTION</strong>
-          </button>
-          <CollCreateModal />
-        </div>
-      ) : null}
     </div>
   );
 }
