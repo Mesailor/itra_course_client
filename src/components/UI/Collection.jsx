@@ -47,6 +47,7 @@ export default function Collection({ collection }) {
             </>
           ) : (
             <Link
+              style={{ position: "absolute" }}
               className="btn btn-success"
               to={`/user/${collection.user_id}/collection/${collection.id}`}
             >
