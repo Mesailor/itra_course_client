@@ -11,6 +11,7 @@ export default function MainPage() {
   const trigger = useSelector((store) => store.refetch.trigger);
   const [isLoadingRecent, setIsLoadingRecent] = useState(true);
   const [isLoadingLargest, setIsLoadingLargest] = useState(true);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -36,8 +37,10 @@ export default function MainPage() {
       } catch (e) {
         setIsLoadingLargest(false);
         setIsLoadingRecent(false);
-        alert(e);
         console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, [trigger]);
@@ -85,6 +88,11 @@ export default function MainPage() {
             )}
           </div>
         </div>
+        {resultMessage ? (
+          <div className="text-danger text-center my-4">
+            <h3>{resultMessage}</h3>
+          </div>
+        ) : null}
       </main>
     </div>
   );

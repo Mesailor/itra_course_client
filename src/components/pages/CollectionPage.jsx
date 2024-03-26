@@ -34,6 +34,7 @@ export default function CollectionPage() {
     },
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     dispatch(insertRecentId(collectionPageId));
@@ -60,8 +61,10 @@ export default function CollectionPage() {
         setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
-        alert(e);
-        console.log("Sorry, something went wrong...", e);
+        console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, [trigger]);
@@ -100,6 +103,10 @@ export default function CollectionPage() {
           <div className="spinner-border text-center" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
+        </div>
+      ) : resultMessage ? (
+        <div className="text-danger text-center my-4">
+          <h3>{resultMessage}</h3>
         </div>
       ) : (
         <>

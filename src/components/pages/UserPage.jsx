@@ -34,7 +34,9 @@ export default function UserPage() {
       } catch (e) {
         setIsLoading(false);
         console.error(e);
-        setResultMessage(e.message);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, [trigger, usersPageId]);
@@ -49,7 +51,7 @@ export default function UserPage() {
           </div>
         ) : resultMessage ? (
           <div className="text-danger text-center my-4">
-            <h1>{resultMessage}</h1>
+            <h3>{resultMessage}</h3>
           </div>
         ) : (
           <div>

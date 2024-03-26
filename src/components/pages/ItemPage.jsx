@@ -12,13 +12,14 @@ export default function ItemPage() {
   const [item, setItem] = useState({});
   const [collection, setCollection] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     (async function () {
       try {
         const resultItem = await apiService.getItem(itemPageId);
         if (!resultItem.success) {
-          return console.log("Problem with fetching item from server");
+          throw new Error("Problem with fetching item from server");
         }
         setItem(resultItem.item);
 
@@ -26,14 +27,16 @@ export default function ItemPage() {
           resultItem.item.collection_id
         );
         if (!resultCollection.success) {
-          return console.log("Problem with fetching collection from server");
+          throw new Error("Problem with fetching collection from server");
         }
         setCollection(resultCollection.collection);
         setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
-        alert(e);
-        console.log(e);
+        console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, []);
@@ -45,6 +48,10 @@ export default function ItemPage() {
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
+        </div>
+      ) : resultMessage ? (
+        <div className="text-danger text-center my-4">
+          <h3>{resultMessage}</h3>
         </div>
       ) : (
         <>
