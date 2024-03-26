@@ -33,14 +33,12 @@ export default function CollectionPage() {
       matchMode: FilterMatchMode.CONTAINS,
     },
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     dispatch(insertRecentId(collectionPageId));
     (async () => {
       try {
-        setIsLoading(true);
-
         if (!collection.name) {
           const resultCollection = await apiService.getCollection(
             collectionPageId

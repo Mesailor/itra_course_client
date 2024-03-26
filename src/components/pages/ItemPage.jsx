@@ -11,13 +11,11 @@ export default function ItemPage() {
   const { itemPageId } = useLoaderData();
   const [item, setItem] = useState({});
   const [collection, setCollection] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async function () {
       try {
-        setIsLoading(true);
-
         const resultItem = await apiService.getItem(itemPageId);
         if (!resultItem.success) {
           return console.log("Problem with fetching item from server");

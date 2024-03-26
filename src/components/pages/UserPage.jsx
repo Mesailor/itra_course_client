@@ -5,8 +5,6 @@ import { useSelector } from "react-redux";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { UserPageContext } from "../../context/UserPageContext";
 import Collection from "../UI/Collection";
-import CollDeleteModal from "../UI/CollDeleteModal";
-import CollEditModal from "../UI/CollEditModal";
 
 export function loader({ params }) {
   const usersPageId = params.userId;
@@ -27,8 +25,6 @@ export default function UserPage() {
     setUsersPageId(Number(usersPageId));
     (async function () {
       try {
-        setIsLoading(true);
-
         const result = await apiService.getAllCollections(usersPageId);
         if (result.status !== 200) {
           return setResultMessage(result.message);
@@ -84,14 +80,6 @@ export default function UserPage() {
         {Number(usersPageId) === user.id ? (
           <>
             <CollCreateModal />
-            {collections.map((collection) => {
-              return (
-                <div key={collection.id}>
-                  <CollDeleteModal collectionId={collection.id} />
-                  <CollEditModal collection={collection} />
-                </div>
-              );
-            })}
           </>
         ) : null}
       </div>

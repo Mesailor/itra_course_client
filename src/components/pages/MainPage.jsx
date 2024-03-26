@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import apiService from "../../services/APIService";
 import CollectionSm from "../UI/CollectionSm";
 import Collection from "../UI/Collection";
@@ -10,14 +9,11 @@ export default function MainPage() {
   const [largestColls, setLargestColls] = useState([]);
   const recentCollectionIds = useSelector((store) => store.recentCollIds);
   const trigger = useSelector((store) => store.refetch.trigger);
-  const [isLoadingRecent, setIsLoadingRecent] = useState(false);
-  const [isLoadingLargest, setIsLoadingLargest] = useState(false);
+  const [isLoadingRecent, setIsLoadingRecent] = useState(true);
+  const [isLoadingLargest, setIsLoadingLargest] = useState(true);
 
   useEffect(() => {
     (async () => {
-      setIsLoadingLargest(true);
-      setIsLoadingRecent(true);
-
       try {
         const resultRecentColls = await apiService.getManyCollections(
           recentCollectionIds
