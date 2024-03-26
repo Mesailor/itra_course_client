@@ -24,7 +24,7 @@ export default function MainPage() {
               if (collection.id == id) return collection;
             }
           });
-          setRecentCollections(collections);
+          setRecentCollections(collections.filter((collection) => collection));
           setIsLoadingRecent(false);
         }
 
