@@ -41,13 +41,17 @@ export default function CollectionPage() {
       try {
         setIsLoading(true);
 
-        const resultCollection = await apiService.getCollection(
-          collectionPageId
-        );
-        if (!resultCollection.success) {
-          return console.log(resultCollection.message);
+        if (!collection.name) {
+          const resultCollection = await apiService.getCollection(
+            collectionPageId
+          );
+          if (!resultCollection.success) {
+            return console.log(resultCollection.message);
+          }
+          setCollection(resultCollection.collection);
+          setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
+          setIsAuthed(resultCollection.collection.user_id === user.id);
         }
-        setCollection(resultCollection.collection);
 
         const resultItems = await apiService.getItems(collectionPageId);
         if (!resultItems.success) {
@@ -55,8 +59,6 @@ export default function CollectionPage() {
         }
         setItems(resultItems.items);
 
-        setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
-        setIsAuthed(resultCollection.collection.user_id === user.id);
         setIsLoading(false);
       } catch (e) {
         setIsLoading(false);
