@@ -107,11 +107,16 @@ export default function CollectionPage() {
         <>
           <div className="title mb-4">
             <div className="mb-3">
-              <img
-                style={{ width: "60%", margin: "0 20% 3%" }}
-                src={collection.imageUrl}
-                alt="collection-image"
-              />
+              <div className="text-center mb-4">
+                <img
+                  style={{
+                    maxHeight: "20rem",
+                    maxWidth: "70%",
+                  }}
+                  src={collection.imageUrl}
+                  alt="collection-image"
+                />
+              </div>
 
               <h3>{collection.name}</h3>
               <i>{collection.topic}</i>

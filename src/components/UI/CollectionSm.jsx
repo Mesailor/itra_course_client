@@ -8,8 +8,9 @@ export default function CollectionSm({ collection }) {
         to={`/user/${collection.user_id}/collection/${collection.id}`}
       >
         <img
+          style={{ objectFit: "contain", height: "12rem" }}
           src={collection.imageUrl}
-          className="card-img-top h-50"
+          className="card-img-top"
           alt="collection image"
         />
         <div className="card-body">
@@ -17,9 +18,6 @@ export default function CollectionSm({ collection }) {
           <p className="card-text">
             <small>{collection.topic}</small>
           </p>
-          {/* <a href="#" className="btn btn-primary">
-          Go somewhere
-        </a> */}
         </div>
       </Link>
     </div>
