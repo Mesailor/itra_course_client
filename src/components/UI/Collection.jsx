@@ -1,8 +1,8 @@
 import MDEditor from "@uiw/react-md-editor";
-import CollDeleteModal from "./CollDeleteModal";
-import CollEditModal from "./CollEditModal";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import CollDeleteModal from "./CollDeleteModal";
+import CollEditModal from "./CollEditModal";
 
 export default function Collection({ collection }) {
   const user = useSelector((store) => store.user);
@@ -42,11 +42,10 @@ export default function Collection({ collection }) {
                   <i className="bi bi-trash-fill"></i>
                 </button>
               </div>
-              <CollDeleteModal collectionId={collection.id} />
-              <CollEditModal collection={collection} />
             </>
           ) : (
             <Link
+              style={{ position: "absolute" }}
               className="btn btn-success"
               to={`/user/${collection.user_id}/collection/${collection.id}`}
             >
@@ -82,6 +81,12 @@ export default function Collection({ collection }) {
           </div>
         </div>
       </div>
+      {collection.user_id === user.id ? (
+        <div>
+          <CollDeleteModal collectionId={collection.id} />
+          <CollEditModal collection={collection} />
+        </div>
+      ) : null}
     </div>
   );
 }

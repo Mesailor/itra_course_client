@@ -33,18 +33,24 @@ export default function CollectionPage() {
       matchMode: FilterMatchMode.CONTAINS,
     },
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     dispatch(insertRecentId(collectionPageId));
     (async () => {
       try {
-        const resultCollection = await apiService.getCollection(
-          collectionPageId
-        );
-        if (!resultCollection.success) {
-          return console.log(resultCollection.message);
+        if (!collection.name) {
+          const resultCollection = await apiService.getCollection(
+            collectionPageId
+          );
+          if (!resultCollection.success) {
+            return console.log(resultCollection.message);
+          }
+          setCollection(resultCollection.collection);
+          setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
+          setIsAuthed(resultCollection.collection.user_id === user.id);
         }
-        setCollection(resultCollection.collection);
 
         const resultItems = await apiService.getItems(collectionPageId);
         if (!resultItems.success) {
@@ -52,10 +58,13 @@ export default function CollectionPage() {
         }
         setItems(resultItems.items);
 
-        setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
-        setIsAuthed(resultCollection.collection.user_id === user.id);
+        setIsLoading(false);
       } catch (e) {
-        console.log("Sorry, something went wrong...", e);
+        setIsLoading(false);
+        console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, [trigger]);
@@ -64,14 +73,14 @@ export default function CollectionPage() {
     return (
       <>
         {isAuthed ? (
-          <>
+          <div>
             <button
               type="button"
               className="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target={`#ItemEditModal${item.id}`}
             >
-              EDIT
+              <i className="bi bi-pencil-square"></i>
             </button>
             <button
               type="button"
@@ -79,77 +88,112 @@ export default function CollectionPage() {
               data-bs-toggle="modal"
               data-bs-target={`#ItemDeleteModal${item.id}`}
             >
-              DELETE
+              <i className="bi bi-trash-fill"></i>
             </button>
-          </>
+          </div>
         ) : null}
       </>
     );
   }
   return (
     <div className="collection-page">
-      <div className="title">
-        <img src={collection.imageUrl} alt="collection-image" />
-        <h3>Name: {collection.name}</h3>
-        <i>{collection.topic}</i>
-        <div className="description" data-color-mode="light">
-          <h6>Description: </h6>
-          <MDEditor.Markdown source={collection.description} />
+      <h3 className="display-3 text-center">Collection</h3>
+      {isLoading ? (
+        <div className="text-center">
+          <div className="spinner-border text-center" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
-      </div>
-      <div className="table" style={{ overflow: "auto" }}>
-        <InputText
-          onChange={(e) => {
-            setFilters({
-              global: {
-                value: e.target.value,
-                matchMode: FilterMatchMode.CONTAINS,
-              },
-            });
-          }}
-        />
-        <DataTable value={items} filters={filters}>
-          <Column
-            field="id"
-            header="id"
-            body={({ id }) => {
-              return (
-                <>
-                  {id}
-                  <Link className="btn btn-success" to={`item/${id}`}>
-                    Open
-                  </Link>
-                </>
-              );
-            }}
-            sortable
-          ></Column>
-          <Column field="name" header="name" sortable></Column>
-          <Column field="tags" header="tags" sortable></Column>
-          {Object.entries(itemsSchema).map(([key, value]) => {
-            if (!value) return null;
-            return (
+      ) : resultMessage ? (
+        <div className="text-danger text-center my-4">
+          <h3>{resultMessage}</h3>
+        </div>
+      ) : (
+        <>
+          <div className="title mb-4">
+            <div className="mb-3">
+              <div className="text-center mb-4">
+                <img
+                  style={{
+                    maxHeight: "20rem",
+                    maxWidth: "70%",
+                  }}
+                  src={collection.imageUrl}
+                  alt="collection-image"
+                />
+              </div>
+
+              <h3>{collection.name}</h3>
+              <i>{collection.topic}</i>
+            </div>
+            <div className="description" data-color-mode="light">
+              <h6>Description: </h6>
+              <MDEditor.Markdown source={collection.description} />
+            </div>
+          </div>
+          <div className="table" style={{ overflow: "auto" }}>
+            <InputText
+              style={{ width: "18rem" }}
+              className="form-control"
+              onChange={(e) => {
+                setFilters({
+                  global: {
+                    value: e.target.value,
+                    matchMode: FilterMatchMode.CONTAINS,
+                  },
+                });
+              }}
+              placeholder="Filter items"
+            />
+            <DataTable value={items} filters={filters}>
               <Column
-                key={key}
-                field={`custom_${key.split("_")[1]}_value`}
-                header={value}
+                field="id"
+                header="id"
+                body={({ id }) => {
+                  return (
+                    <>
+                      <Link
+                        className="btn btn-outline-success"
+                        to={`item/${id}`}
+                      >
+                        {id}
+                      </Link>
+                    </>
+                  );
+                }}
                 sortable
               ></Column>
-            );
-          })}
-          <Column field="id" header="*" body={controls}></Column>
-        </DataTable>
-        {isAuthed ? (
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#ItemCreateModal"
-          >
-            +
-          </button>
-        ) : null}
-      </div>
+              <Column field="name" header="name" sortable></Column>
+              <Column field="tags" header="tags" sortable></Column>
+              {Object.entries(itemsSchema).map(([key, value]) => {
+                if (!value) return null;
+                return (
+                  <Column
+                    key={key}
+                    field={`custom_${key.split("_")[1]}_value`}
+                    header={value}
+                    sortable
+                  ></Column>
+                );
+              })}
+              <Column field="id" header="" body={controls}></Column>
+            </DataTable>
+          </div>
+          <div className="text-center">
+            {isAuthed ? (
+              <button
+                type="button"
+                className="btn btn-primary fw-bold mb-5"
+                data-bs-toggle="modal"
+                data-bs-target="#ItemCreateModal"
+              >
+                ADD NEW ITEM
+              </button>
+            ) : null}
+          </div>
+        </>
+      )}
+
       {isAuthed ? (
         <>
           <ItemCreateModal

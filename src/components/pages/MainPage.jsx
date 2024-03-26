@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import apiService from "../../services/APIService";
 import CollectionSm from "../UI/CollectionSm";
 import Collection from "../UI/Collection";
@@ -10,24 +9,38 @@ export default function MainPage() {
   const [largestColls, setLargestColls] = useState([]);
   const recentCollectionIds = useSelector((store) => store.recentCollIds);
   const trigger = useSelector((store) => store.refetch.trigger);
+  const [isLoadingRecent, setIsLoadingRecent] = useState(true);
+  const [isLoadingLargest, setIsLoadingLargest] = useState(true);
+  const [resultMessage, setResultMessage] = useState("");
 
   useEffect(() => {
     (async () => {
-      const resultRecentColls = await apiService.getManyCollections(
-        recentCollectionIds
-      );
-      if (resultRecentColls.success) {
-        const collections = recentCollectionIds.map((id) => {
-          for (let collection of resultRecentColls.collections) {
-            if (collection.id == id) return collection;
-          }
-        });
-        setRecentCollections(collections);
-      }
+      try {
+        const resultRecentColls = await apiService.getManyCollections(
+          recentCollectionIds
+        );
+        if (resultRecentColls.success) {
+          const collections = recentCollectionIds.map((id) => {
+            for (let collection of resultRecentColls.collections) {
+              if (collection.id == id) return collection;
+            }
+          });
+          setRecentCollections(collections.filter((collection) => collection));
+          setIsLoadingRecent(false);
+        }
 
-      const resultLargestColls = await apiService.getFiveLargestColls();
-      if (resultLargestColls.success) {
-        setLargestColls(resultLargestColls.collections);
+        const resultLargestColls = await apiService.getFiveLargestColls();
+        if (resultLargestColls.success) {
+          setLargestColls(resultLargestColls.collections);
+          setIsLoadingLargest(false);
+        }
+      } catch (e) {
+        setIsLoadingLargest(false);
+        setIsLoadingRecent(false);
+        console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
     })();
   }, [trigger]);
@@ -36,47 +49,50 @@ export default function MainPage() {
     <div className="main-page">
       <main className="container-xxl">
         <div className="recently-seen">
-          <h3>Recently seen</h3>
-          <div className="collections-list">
-            <ul>
-              {recentCollections.length ? (
-                recentCollections.map((collection) => {
-                  return (
-                    <li key={collection.id}>
-                      <Link
-                        to={`/user/${collection.user_id}/collection/${collection.id}`}
-                      >
-                        <CollectionSm collection={collection} />
-                      </Link>
-                    </li>
-                  );
-                })
-              ) : (
-                <p>Keep exploring!</p>
-              )}
-            </ul>
+          <h5 className="display-5 mb-3">Recently seen</h5>
+          <div className="collections-list d-flex gap-3 overflow-auto">
+            {isLoadingRecent ? (
+              <div className="spinner-border mx-auto" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : recentCollections.length ? (
+              recentCollections.map((collection) => {
+                return (
+                  <div key={collection.id}>
+                    <CollectionSm collection={collection} />
+                  </div>
+                );
+              })
+            ) : (
+              <h5 className="mb-4">Keep exploring!</h5>
+            )}
           </div>
         </div>
-        <div className="top--largest">
-          <h3>Top Largest</h3>
-          <ul>
-            {largestColls.length ? (
+        <div className="top-largest">
+          <h5 className="display-5 mb-3">Top Largest</h5>
+          <div className="largest-collections d-flex flex-column">
+            {isLoadingLargest ? (
+              <div className="spinner-border mx-auto" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : largestColls.length ? (
               largestColls.map((collection) => (
-                <li key={collection.id}>
-                  <Collection collection={collection} />
-                </li>
+                <Collection
+                  className="mb-4"
+                  key={collection.id}
+                  collection={collection}
+                />
               ))
             ) : (
               <p>No collections exist yet</p>
             )}
-          </ul>
+          </div>
         </div>
-        <p>
-          <Link to="/user/1">1</Link>
-        </p>
-        <p>
-          <Link to="/user/2">2</Link>
-        </p>
+        {resultMessage ? (
+          <div className="text-danger text-center my-4">
+            <h3>{resultMessage}</h3>
+          </div>
+        ) : null}
       </main>
     </div>
   );

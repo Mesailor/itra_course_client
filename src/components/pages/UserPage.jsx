@@ -18,16 +18,26 @@ export default function UserPage() {
   const trigger = useSelector((store) => store.refetch.trigger);
   const { usersPageId } = useLoaderData();
   const [resultMessage, setResultMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setResultMessage("");
     setUsersPageId(Number(usersPageId));
     (async function () {
-      const result = await apiService.getAllCollections(usersPageId);
-      if (result.status !== 200) {
-        return setResultMessage(result.message);
+      try {
+        const result = await apiService.getAllCollections(usersPageId);
+        if (result.status !== 200) {
+          return setResultMessage(result.message);
+        }
+        setCollections(result.collections);
+        setIsLoading(false);
+      } catch (e) {
+        setIsLoading(false);
+        console.error(e);
+        setResultMessage(
+          "The error occured while fetching data. For more details please check the console or contact the administrator."
+        );
       }
-      setCollections(result.collections);
     })();
   }, [trigger, usersPageId]);
 
@@ -35,32 +45,46 @@ export default function UserPage() {
     <div className="user-page">
       <h3 className="display-3 text-center my-3">Personal Collections</h3>
       <div className="collections-list">
-        {collections.length ? (
-          collections.map((collection) => (
-            <Collection key={collection.id} collection={collection} />
-          ))
-        ) : resultMessage ? (
-          <div className="text-danger text-center my-4">
-            <h1>{resultMessage}</h1>
-          </div>
-        ) : (
+        {isLoading ? (
           <div style={{ width: "50px" }} className="mx-auto my-4">
             <div className="spinner-border" role="status"></div>
           </div>
+        ) : resultMessage ? (
+          <div className="text-danger text-center my-4">
+            <h3>{resultMessage}</h3>
+          </div>
+        ) : (
+          <div>
+            {collections.length ? (
+              <div>
+                {collections.map((collection) => (
+                  <Collection key={collection.id} collection={collection} />
+                ))}
+              </div>
+            ) : (
+              <div>
+                <h4 className="text-center">No collections yet</h4>
+              </div>
+            )}
+            {Number(usersPageId) === user.id ? (
+              <div className="text-center">
+                <button
+                  className="btn btn-primary my-2 mb-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#CollCreateModal"
+                >
+                  <strong>ADD NEW COLLECTION</strong>
+                </button>
+              </div>
+            ) : null}
+          </div>
         )}
+        {Number(usersPageId) === user.id ? (
+          <>
+            <CollCreateModal />
+          </>
+        ) : null}
       </div>
-      {Number(usersPageId) === user.id ? (
-        <div className="text-center">
-          <button
-            className="btn btn-primary my-2 mb-4"
-            data-bs-toggle="modal"
-            data-bs-target="#CollCreateModal"
-          >
-            <strong>ADD NEW COLLECTION</strong>
-          </button>
-          <CollCreateModal />
-        </div>
-      ) : null}
     </div>
   );
 }
