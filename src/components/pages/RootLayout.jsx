@@ -31,7 +31,7 @@ export default function RootLayout() {
                   <img
                     style={{ width: "2em", height: "2em" }}
                     className="bg-primary rounded-circle me-2"
-                    src="/src/assets/my_collections_logo.png"
+                    src="https://firebasestorage.googleapis.com/v0/b/itra-collections.appspot.com/o/default%2Fmy_collections_logo.png?alt=media&token=cce7f398-ab91-4cbf-b947-81a4326d2e95"
                     alt="my_collections_logo"
                   />
                   <h1 className="d-none d-md-block">My Collections</h1>
