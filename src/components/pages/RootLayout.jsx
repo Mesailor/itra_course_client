@@ -51,6 +51,7 @@ export default function RootLayout() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  disabled
                 />
               </form>
             </div>
