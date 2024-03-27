@@ -197,7 +197,7 @@ export default function ItemValuesEditor({
             updateFields("date1", e.target.value);
           }}
           type="date"
-          value={itemFieldsValues.custom_date1_value}
+          value={itemFieldsValues.custom_date1_value || ""}
         />
       </li>
 
@@ -216,7 +216,7 @@ export default function ItemValuesEditor({
             updateFields("date2", e.target.value);
           }}
           type="date"
-          value={itemFieldsValues.custom_date2_value}
+          value={itemFieldsValues.custom_date2_value || ""}
         />
       </li>
 
@@ -235,7 +235,7 @@ export default function ItemValuesEditor({
             updateFields("date3", e.target.value);
           }}
           type="date"
-          value={itemFieldsValues.custom_date3_value}
+          value={itemFieldsValues.custom_date3_value || ""}
         />
       </li>
 

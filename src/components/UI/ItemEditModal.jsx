@@ -50,7 +50,7 @@ export default function ItemEditModal({ itemsSchema, item }) {
       }
 
       if (itemFieldsValues[`custom_date${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_date${i}_value`] = Date.now();
+        checkedItemFieldsValues[`custom_date${i}_value`] = null;
       }
 
       if (itemFieldsValues[`custom_bool${i}_value`] === "") {
