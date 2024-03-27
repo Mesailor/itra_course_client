@@ -50,7 +50,7 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
       }
 
       if (itemFieldsValues[`custom_date${i}_value`] === "") {
-        checkedItemFieldsValues[`custom_date${i}_value`] = Date.now();
+        checkedItemFieldsValues[`custom_date${i}_value`] = null;
       }
 
       if (itemFieldsValues[`custom_bool${i}_value`] === "") {
@@ -107,34 +107,42 @@ export default function ItemCreateModal({ collectionId, itemsSchema }) {
             ></button>
           </div>
           <div className="modal-body">
-            <div className="field-input">
-              <label htmlFor="name">Name</label>
-              <input
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                name="name"
-                type="text"
-                value={name}
-              />
-            </div>
-            <div className="field-input">
-              <label htmlFor="tags">Tags</label>
-              <input
-                onChange={(e) => {
-                  setTags(e.target.value);
-                }}
-                name="tags"
-                type="text"
-                value={tags}
-              />
-            </div>
+            <ul className="list-group text-center">
+              <li className="list-group-item">
+                <label className="form-label fw-bold" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  className="form-control"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  name="name"
+                  type="text"
+                  value={name}
+                />
+              </li>
+              <li className="list-group-item">
+                <label className="form-label fw-bold" htmlFor="tags">
+                  Tags
+                </label>
+                <input
+                  className="form-control"
+                  onChange={(e) => {
+                    setTags(e.target.value);
+                  }}
+                  name="tags"
+                  type="text"
+                  value={tags}
+                />
+              </li>
 
-            <ItemValuesEditor
-              itemsSchema={itemsSchema}
-              itemFieldsValues={itemFieldsValues}
-              setItemFieldsValues={setItemFieldsValues}
-            />
+              <ItemValuesEditor
+                itemsSchema={itemsSchema}
+                itemFieldsValues={itemFieldsValues}
+                setItemFieldsValues={setItemFieldsValues}
+              />
+            </ul>
           </div>
           <div className="modal-footer">
             <div className="result-message m-auto">

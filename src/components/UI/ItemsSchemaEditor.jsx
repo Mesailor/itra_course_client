@@ -10,7 +10,7 @@ export default function ItemsSchemaEditor({ itemsSchema, setItemsSchema }) {
       <form>
         <ul className="list-group">
           <li className="list-group-item">Name</li>
-          <li className="list-group-item">Tag</li>
+          <li className="list-group-item">Tags</li>
           <li className="list-group-item">
             <input
               onChange={(e) => {
