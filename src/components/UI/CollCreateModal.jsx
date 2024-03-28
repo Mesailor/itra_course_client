@@ -7,6 +7,7 @@ import ItemsSchemaEditor from "./ItemsSchemaEditor";
 import { triggerRefetch } from "../../store/refetchSlice";
 import MDEditor from "@uiw/react-md-editor";
 import { validateCollectionData } from "../../services/ValidationService";
+import { fireStoreConfig } from "../../../config/config";
 
 export default function CollCreateModal() {
   const dispatch = useDispatch();
@@ -72,7 +73,7 @@ export default function CollCreateModal() {
         if (image) {
           const imageRef = ref(
             storage,
-            `coll_images/${user.id + result.newCollection.id}`
+            `${fireStoreConfig.directory}/${user.id + result.newCollection.id}`
           );
           await uploadBytes(imageRef, image);
           imageUrl = await getDownloadURL(imageRef);
