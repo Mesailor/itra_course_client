@@ -1,13 +1,27 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiService from "../../services/APIService";
 import { triggerRefetch } from "../../store/refetchSlice";
+import { storage } from "../../firebase";
+import { deleteObject, ref } from "firebase/storage";
+import { fireStoreConfig } from "../../../config/config";
 
 export default function CollDeleteModal({ collectionId }) {
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
 
   async function deleteCollection() {
-    await apiService.reqDeleteColl(collectionId);
-    dispatch(triggerRefetch());
+    try {
+      const result = await apiService.reqDeleteColl(collectionId);
+      if (result.success) {
+        await deleteObject(
+          ref(storage, `${fireStoreConfig.directory}/${user.id + collectionId}`)
+        );
+      }
+      dispatch(triggerRefetch());
+    } catch (e) {
+      console.log(e);
+      alert("Problem occurred while deleting");
+    }
   }
   return (
     <div

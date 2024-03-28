@@ -97,7 +97,7 @@ class APIService {
         token: this.#getSessionJwt(),
         payload: { collectionId },
       }),
-    });
+    }).then((response) => response.json());
   }
 
   async reqUpdateColl(newCollection, collectionId) {
