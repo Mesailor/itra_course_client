@@ -32,7 +32,7 @@ export default function LoginPage() {
       const result = await apiService.sendAuthReq(userCredentials);
 
       if (result.success) {
-        dispatch(setUser(result.user));
+        dispatch(setUser({ ...result.user, jwt: result.jwt }));
         return navigate("/main");
       } else {
         setErrorMessage(result.message);

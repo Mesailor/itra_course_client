@@ -3,6 +3,10 @@ import { APIServiceConfig } from "../../config/config";
 class APIService {
   host = APIServiceConfig.host;
 
+  #getSessionJwt() {
+    return JSON.parse(window.sessionStorage.getItem("user")).jwt;
+  }
+
   async sendAuthReq(userCredentials) {
     return await fetch(`${this.host}/account`, {
       method: "POST",
@@ -61,7 +65,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: newCollection }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: newCollection,
+      }),
     }).then((response) => response.json());
   }
 
@@ -72,7 +79,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: { imageUrl, collectionId } }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: { imageUrl, collectionId },
+      }),
     }).then((response) => response.json());
   }
 
@@ -83,7 +93,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: collectionId }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: { collectionId },
+      }),
     });
   }
 
@@ -94,7 +107,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: { newCollection, collectionId } }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: { newCollection, collectionId },
+      }),
     }).then((response) => response.json());
   }
 
@@ -117,7 +133,7 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: newItem }),
+      body: JSON.stringify({ token: this.#getSessionJwt(), payload: newItem }),
     }).then((response) => response.json());
   }
 
@@ -128,7 +144,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: itemId }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: { itemId },
+      }),
     });
   }
 
@@ -139,7 +158,10 @@ class APIService {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ payload: { newItem, itemId } }),
+      body: JSON.stringify({
+        token: this.#getSessionJwt(),
+        payload: { newItem, itemId },
+      }),
     }).then((response) => response.json());
   }
 }
