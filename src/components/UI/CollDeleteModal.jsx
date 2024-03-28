@@ -5,14 +5,18 @@ import { storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
 import { fireStoreConfig } from "../../../config/config";
 
-export default function CollDeleteModal({ collectionId }) {
+export default function CollDeleteModal({ collectionId, imageUrl }) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
   async function deleteCollection() {
     try {
       const result = await apiService.reqDeleteColl(collectionId);
-      if (result.success) {
+      if (
+        result.success &&
+        imageUrl !==
+          "https://firebasestorage.googleapis.com/v0/b/itra-collections.appspot.com/o/default%2Fdefault_collection_image.jpg?alt=media&token=7389f98e-03bc-4a79-8880-10009d41d818https://firebasestorage.googleapis.com/v0/b/itra-collections.appspot.com/o/default%2Fdefault_collection_image.jpg?alt=media&token=baa0b64d-28d3-45e0-900a-a482cfddac18"
+      ) {
         await deleteObject(
           ref(storage, `${fireStoreConfig.directory}/${user.id + collectionId}`)
         );

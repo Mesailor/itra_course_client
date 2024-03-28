@@ -80,7 +80,7 @@ export default function CollCreateModal() {
           await apiService.updateImageUrl(imageUrl, result.newCollection.id);
         }
 
-        setImage({});
+        setImage(null);
         setImagePath("");
         setName("");
         setTopic("books");

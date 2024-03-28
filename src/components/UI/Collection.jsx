@@ -79,7 +79,10 @@ export default function Collection({ collection }) {
       </div>
       {collection.user_id === user.id ? (
         <div>
-          <CollDeleteModal collectionId={collection.id} />
+          <CollDeleteModal
+            collectionId={collection.id}
+            imageUrl={collection.imageUrl}
+          />
           <CollEditModal collection={collection} />
         </div>
       ) : null}
