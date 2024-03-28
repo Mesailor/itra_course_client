@@ -131,7 +131,7 @@ export default function CollectionPage() {
               <MDEditor.Markdown source={collection.description} />
             </div>
           </div>
-          <div className="table" style={{ overflow: "auto" }}>
+          <div className="overflow-auto">
             <InputText
               style={{ width: "18rem" }}
               className="form-control"
@@ -145,7 +145,12 @@ export default function CollectionPage() {
               }}
               placeholder="Filter items"
             />
-            <DataTable value={items} filters={filters}>
+            <DataTable
+              className="table"
+              value={items}
+              stripedRows
+              filters={filters}
+            >
               <Column
                 field="id"
                 header="id"

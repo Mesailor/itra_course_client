@@ -36,7 +36,7 @@ export default function RegPage() {
       const result = await apiService.sendSignupReq(newUser);
 
       if (result.success) {
-        dispatch(setUser(result.user));
+        dispatch(setUser({ ...result.user, jwt: result.jwt }));
         return navigate("/main");
       } else {
         setErrorMessage(result.message);

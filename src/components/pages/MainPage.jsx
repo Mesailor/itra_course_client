@@ -50,7 +50,7 @@ export default function MainPage() {
       <main className="container-xxl">
         <div className="recently-seen">
           <h5 className="display-5 mb-3">Recently seen</h5>
-          <div className="collections-list d-flex gap-3 overflow-auto">
+          <div className="collections-list mb-4 d-flex gap-3 overflow-auto">
             {isLoadingRecent ? (
               <div className="spinner-border mx-auto" role="status">
                 <span className="visually-hidden">Loading...</span>
