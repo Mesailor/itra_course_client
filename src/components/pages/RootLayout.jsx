@@ -113,19 +113,43 @@ export default function RootLayout() {
                   {user.name ? (
                     <>
                       <Link className="nav-link m-2" to={`user/${user.id}`}>
-                        Personal Collections
+                        <div
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseAccount"
+                          aria-expanded="false"
+                          aria-controls="collapseAccount"
+                        >
+                          Personal Collections
+                        </div>
                       </Link>
                       <Link
                         className="nav-link m-2"
                         onClick={logout}
                         to="/main"
                       >
-                        Log out
+                        <div
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseAccount"
+                          aria-expanded="false"
+                          aria-controls="collapseAccount"
+                        >
+                          Log out
+                        </div>
                       </Link>
                     </>
                   ) : (
                     <Link className="d-block nav-link" to="/log-in">
-                      Log in
+                      <div
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseAccount"
+                        aria-expanded="false"
+                        aria-controls="collapseAccount"
+                      >
+                        Log in
+                      </div>
                     </Link>
                   )}
                 </div>
