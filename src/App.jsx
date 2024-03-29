@@ -15,6 +15,7 @@ import CollectionPage, {
 import ItemPage, {
   loader as ItemPageLoader,
 } from "./components/pages/ItemPage";
+import { AdminPage } from "./components/pages/AdminPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
+      { path: "admin", element: <AdminPage /> },
       {
         path: "main",
         element: <MainPage />,

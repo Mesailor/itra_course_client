@@ -29,6 +29,12 @@ class APIService {
     }).then((response) => response.json());
   }
 
+  async getUsers() {
+    return await fetch(`${this.host}/users`).then((response) =>
+      response.json()
+    );
+  }
+
   async getAllCollections(user_id) {
     return await fetch(`${this.host}/collections/user-${user_id}`).then(
       (response) => response.json()
