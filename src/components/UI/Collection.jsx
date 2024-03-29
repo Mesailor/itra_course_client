@@ -6,6 +6,7 @@ import CollEditModal from "./CollEditModal";
 
 export default function Collection({ collection }) {
   const user = useSelector((store) => store.user);
+  const isAuthed = collection.user_id === user.id || user.isAdmin;
   return (
     <div className="bg-light card mb-3">
       <div className="row">
@@ -24,7 +25,7 @@ export default function Collection({ collection }) {
                 <p className="card-text">
                   <small className="text-muted">{collection.topic}</small>
                 </p>
-                {collection.user_id === user.id ? (
+                {isAuthed ? (
                   <>
                     <div
                       className="btn-group"
@@ -77,7 +78,7 @@ export default function Collection({ collection }) {
           </div>
         </div>
       </div>
-      {collection.user_id === user.id ? (
+      {isAuthed ? (
         <div>
           <CollDeleteModal
             collectionId={collection.id}
