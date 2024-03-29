@@ -49,7 +49,9 @@ export default function CollectionPage() {
           }
           setCollection(resultCollection.collection);
           setItemsSchema(JSON.parse(resultCollection.collection.itemsSchema));
-          setIsAuthed(resultCollection.collection.user_id === user.id);
+          setIsAuthed(
+            resultCollection.collection.user_id === user.id || user.isAdmin
+          );
         }
 
         const resultItems = await apiService.getItems(collectionPageId);

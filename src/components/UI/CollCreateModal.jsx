@@ -9,7 +9,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { validateCollectionData } from "../../services/ValidationService";
 import { fireStoreConfig } from "../../../config/config";
 
-export default function CollCreateModal() {
+export default function CollCreateModal({ usersPageId }) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const initialItemsSchema = {
@@ -53,7 +53,7 @@ export default function CollCreateModal() {
     }
 
     const newCollection = {
-      user_id: user.id,
+      user_id: usersPageId,
       name,
       topic,
       description,

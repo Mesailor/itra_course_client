@@ -19,6 +19,7 @@ export default function UserPage() {
   const { usersPageId } = useLoaderData();
   const [resultMessage, setResultMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const isAuthed = Number(usersPageId) === user.id || user.isAdmin;
 
   useEffect(() => {
     setResultMessage("");
@@ -66,7 +67,7 @@ export default function UserPage() {
                 <h4 className="text-center">No collections yet</h4>
               </div>
             )}
-            {Number(usersPageId) === user.id ? (
+            {isAuthed ? (
               <div className="text-center">
                 <button
                   className="btn btn-primary my-2 mb-4"
@@ -79,9 +80,9 @@ export default function UserPage() {
             ) : null}
           </div>
         )}
-        {Number(usersPageId) === user.id ? (
+        {isAuthed ? (
           <>
-            <CollCreateModal />
+            <CollCreateModal usersPageId={usersPageId} />
           </>
         ) : null}
       </div>
